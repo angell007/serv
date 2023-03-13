@@ -9,131 +9,167 @@ use Illuminate\Support\Facades\DB;
 
 trait ReportsTxt
 {
+
+
+
+    protected $codeIes = 22293;
+    protected $separatorSingle = '|$|';
+    protected $separatorDouble = '|$$|';
+    protected $yes = 'S';
+    protected $not = 'N';
+    protected $urlBase = 'urlbase';
+    protected $baseSalary = 1160000;
+
     public function PositionsTxt()
     {
-        $data = Job::join('companies', 'companies.id', 'jobs.company_id')
 
-            ->join('job_experiences', 'job_experiences.job_experience_id', 'jobs.job_experience_id')
+        $init =  request()->get('inicio');
+        $end =  request()->get('fin');
+        $date =  Carbon::now()->format('mY');
 
-            ->join('functional_areas', 'functional_areas.functional_area_id', 'jobs.functional_area_id')
+        $data = DB::select("SELECT
+	    '22293' AS codigoPrestador,
+	    jobs.id AS codigoVacante,
+	    title AS tituloVacante,
+	    replace(jobs.description, '\r', ' ') AS descripcionVacante,
+	    (job_experience * 12) AS tiempoExperienciaRelacionada,
+	    career_levels.code AS nivelEstudiosRequerido,
+	    IF(
+	        career_levels.code = 5,
+	        degree_level,
+	        IF(
+	            career_levels.code = 6,
+	            degree_level,
+	            IF(
+	                career_levels.code = 7,
+	                degree_level,
+	                IF(career_levels.code = 8, degree_level, 'NA')
+	            )
+	        )
+	    ) AS disciplinaOProfesion,
+	    IF(
+	        salary_from = 0,
+	        IF(salary_to = 0, 'A convenir', salary_to),
+	        IF(
+	            salary_to = 0,
+	            salary_from,
+	            CONCAT(salary_from, '-', salary_to)
+	        )
+	    ) AS salario,
+	    num_of_positions AS cantidadVacantes,
+	    functional_area AS cargo,
+	    IF(tipo_identificacion = 'NIT', 1, 2) AS codigoTipoDocumentoEmpleador,
+	    identificacion AS numeroIdentificacionEmpleador,
+	    name AS razonSocial,
+	    IF(show_info = 'si', 'S', 'N') AS solicitudExcepcionPublicacion,
+	    CONCAT(
+	        date_format(jobs.created_at, '%d'),
+	        '/',
+	        date_format(jobs.created_at, '%m'),
+	        '/',
+	        date_format(jobs.created_at, '%Y')
+	    ) AS fechaPublicacion,
+	    CONCAT(
+	        date_format(jobs.expiry_date, '%d'),
+	        '/',
+	        date_format(jobs.expiry_date, '%m'),
+	        '/',
+	        date_format(jobs.expiry_date, '%Y')
+	    ) AS fechaVencimiento,
+	    divipola AS codigoMunicipio,
+	    industry AS sectorEconomico,
+	    IF(
+	        jobs.job_type_id = 4,
+	        2,
+	        IF(
+	            jobs.job_type_id = 2,
+	            4,
+	            IF(
+	                jobs.job_type_id = 5,
+	                6,
+	                IF(
+	                    jobs.job_type_id = 3,
+	                    1,
+	                    IF(jobs.job_type_id = 26, 5, 3)
+	                )
+	            )
+	        )
+	    ) AS tipoContrato,
+	    is_freelance AS teletrabajo,
+	    0 AS discapacidad,
+	    CONCAT(
+	        'https://bolsadeempleo.itc.edu.co/job/',
+	        jobs.slug
+	    ) AS url
+	FROM
+	    jobs
+	    INNER JOIN job_experiences ON jobs.job_experience_id = job_experiences.job_experience_id
+	    INNER JOIN career_levels ON jobs.career_level_id = career_levels.career_level_id
+	    INNER JOIN degree_levels ON jobs.degree_level_id = degree_levels.degree_level_id
+	    INNER JOIN functional_areas ON jobs.functional_area_id = functional_areas.id
+	    INNER JOIN companies ON jobs.company_id = companies.id
+	    INNER JOIN cities ON jobs.city_id = cities.city_id
+	    INNER JOIN industries ON companies.industry_id = industries.industry_id
+	    INNER JOIN job_types ON jobs.job_type_id = job_types.job_type_id
+	WHERE
+		companies.is_active = 1
+		AND 
+	    jobs.created_at BETWEEN '$init'
+	    AND '$end'
+	    
+	ORDER BY
+	    jobs.created_at ASC;
+");
 
-            ->join('degree_levels', 'degree_levels.degree_level_id', 'jobs.degree_level_id')
-
-            ->join('industries', 'industries.industry_id', 'companies.industry_id')
-
-            ->join('job_types', 'job_types.job_type_id', 'jobs.job_type_id')
-
-            ->join('cities', 'cities.city_id', 'jobs.city_id')
-
-            ->select([
-
-                'jobs.company_id',
-
-                'jobs.id',
-
-                'jobs.title',
-
-                'jobs.description',
-
-                'job_experiences.job_experience',
-
-                'functional_areas.functional_area',
-
-                'degree_levels.qualification',
-
-                'jobs.salary_currency',
-
-                'jobs.num_of_positions',
-
-                'jobs.position',
-
-                'companies.tipo_identificacion',
-
-                'companies.identificacion',
-
-                'companies.name',
-
-                'jobs.show_info',
-
-                'jobs.created_at',
-
-                'jobs.expiry_date',
-
-                'jobs.salary_from',
-
-                'jobs.salary_to',
-
-                'cities.code',
-
-                'industries.industry',
-
-                'job_types.type_for_report',
-
-                'jobs.is_freelance',
-
-                'jobs.is_freelance',
-
-                'jobs.slug',
-
-                'jobs.id',
-            ])
-            ->where('job_experiences.is_default', 1)
-            ->where('job_types.is_default', 1)
-            ->when(request()->get('inicio') && request()->get('fin'), function ($q) {
-                $q->whereBetween('jobs.created_at', [request()->get('inicio'), request()->get('fin')]);
-            })
-
-            ->get();
-
-        $file = "reporteVacantes.txt";
+        $file = $this->codeIes . Carbon::now()->format('Ymd') . ".txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
         foreach ($data as $datum) {
 
-            fwrite($txt,        22235 . '|$$|');
+            fwrite($txt,        $datum->codigoPrestador  . $this->separatorDouble);
 
-            fwrite($txt,        $datum->id . '|$$|');
+            fwrite($txt,        $datum->codigoVacante . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->title) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->tituloVacante) . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->description) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->descripcionVacante) . $this->separatorDouble);
 
-            fwrite($txt,        $this->replaceyears($datum->job_experience) . '|$$|');
+            fwrite($txt,        $this->replaceyears($datum->tiempoExperienciaRelacionada) . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->qualification) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->nivelEstudiosRequerido) . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->functional_area) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->disciplinaOProfesion) . $this->separatorDouble);
 
-            fwrite($txt,        $this->getSalary($datum->salary_from, $datum->salary_to) . '|$$|');
+            fwrite($txt,        $datum->salario . $this->separatorDouble);
 
-            fwrite($txt,        $datum->num_of_positions . '|$$|');
+            fwrite($txt,        $datum->cantidadVacantes . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->position) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->cargo) . $this->separatorDouble);
 
-            fwrite($txt,        1 . '|$$|');
+            fwrite($txt,        $datum->numeroIdentificacionEmpleador . $this->separatorDouble);
 
-            fwrite($txt,        $datum->identificacion . '|$$|');
+            fwrite($txt,        $datum->numeroIdentificacionEmpleador . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->name) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->razonSocial) . $this->separatorDouble);
 
-            fwrite($txt,        'N' . '|$$|');
+            fwrite($txt,        $datum->solicitudExcepcionPublicacion . $this->separatorDouble);
 
-            fwrite($txt,        Carbon::parse($datum->created_at)->format('d/m/Y') . '|$$|');
+            fwrite($txt,        $datum->fechaPublicacion . $this->separatorDouble);
 
-            fwrite($txt,        Carbon::parse($datum->expiry_date)->format('d/m/Y') . '|$$|');
+            fwrite($txt,        $datum->fechaVencimiento . $this->separatorDouble);
 
-            fwrite($txt,        strlen($datum->code) == 5 ? $datum->code : 0 . $datum->code  . '|$$|');
+            fwrite($txt,        $datum->codigoMunicipio . $this->separatorDouble);
 
-            fwrite($txt,        '|$$|' . $this->htmlToPlainText($datum->industry) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->sectorEconomico) . $this->separatorDouble);
 
-            fwrite($txt,        $this->htmlToPlainText($datum->type_for_report) . '|$$|');
+            fwrite($txt,        $this->htmlToPlainText($datum->tipoContrato) . $this->separatorDouble);
 
-            fwrite($txt, ($datum->is_freelance) ? '1' : '0') . '|$$|';
+            fwrite($txt,        $datum->teletrabajo . $this->separatorDouble);
 
-            fwrite($txt,        '|$$|' . '0' . '|$$|');
+            fwrite($txt,        $datum->discapacidad . $this->separatorDouble);
 
-            fwrite($txt,       'https://bolsaempleo.iescinoc.edu.co/job/' . $datum->slug);
+            fwrite($txt,        $datum->url);
 
             fwrite($txt,  PHP_EOL);
 
@@ -161,135 +197,135 @@ trait ReportsTxt
 
     public function PracticasLaboralesTxt()
     {
-        $data = Job::join('companies', 'companies.id', 'jobs.company_id')
+        // $data = Job::join('companies', 'companies.id', 'jobs.company_id')
 
-            ->join('job_experiences', 'job_experiences.job_experience_id', 'jobs.job_experience_id')
+        //     ->join('job_experiences', 'job_experiences.job_experience_id', 'jobs.job_experience_id')
 
-            ->join('functional_areas', 'functional_areas.functional_area_id', 'jobs.functional_area_id')
+        //     ->join('functional_areas', 'functional_areas.functional_area_id', 'jobs.functional_area_id')
 
-            ->join('degree_levels', 'degree_levels.degree_level_id', 'jobs.degree_level_id')
+        //     ->join('degree_levels', 'degree_levels.degree_level_id', 'jobs.degree_level_id')
 
-            ->join('industries', 'industries.industry_id', 'companies.industry_id')
+        //     ->join('industries', 'industries.industry_id', 'companies.industry_id')
 
-            ->join('job_types', 'job_types.job_type_id', 'jobs.job_type_id')
+        //     ->join('job_types', 'job_types.job_type_id', 'jobs.job_type_id')
 
-            ->join('cities', 'cities.city_id', 'jobs.city_id')
+        //     ->join('cities', 'cities.city_id', 'jobs.city_id')
 
-            ->select([
+        //     ->select([
 
-                'jobs.company_id',
+        //         'jobs.company_id',
 
-                'jobs.id',
+        //         'jobs.id',
 
-                'jobs.title',
+        //         'jobs.title',
 
-                'jobs.description',
+        //         'jobs.description',
 
-                'job_experiences.job_experience',
+        //         'job_experiences.job_experience',
 
-                'functional_areas.functional_area',
+        //         'functional_areas.functional_area',
 
-                'degree_levels.qualification',
+        //         'degree_levels.qualification',
 
-                'jobs.salary_currency',
+        //         'jobs.salary_currency',
 
-                'jobs.num_of_positions',
+        //         'jobs.num_of_positions',
 
-                'jobs.position',
+        //         'jobs.position',
 
-                'companies.tipo_identificacion',
+        //         'companies.tipo_identificacion',
 
-                'companies.identificacion',
+        //         'companies.identificacion',
 
-                'companies.name',
+        //         'companies.name',
 
-                'jobs.show_info',
+        //         'jobs.show_info',
 
-                'jobs.created_at',
+        //         'jobs.created_at',
 
-                'jobs.expiry_date',
+        //         'jobs.expiry_date',
 
-                'jobs.salary_from',
+        //         'jobs.salary_from',
 
-                'jobs.salary_to',
+        //         'jobs.salary_to',
 
-                'cities.code',
+        //         'cities.code',
 
-                'industries.industry',
+        //         'industries.industry',
 
-                'job_types.type_for_report',
+        //         'job_types.type_for_report',
 
-                'jobs.is_freelance',
+        //         'jobs.is_freelance',
 
-                'jobs.is_freelance',
+        //         'jobs.is_freelance',
 
-                'jobs.slug',
+        //         'jobs.slug',
 
-                'jobs.id',
-            ])
-            ->where('job_experiences.is_default', 1)
-            ->where('job_types.is_default', 1)
-            ->where('jobs.is_pl', 1)
-            ->when(request()->get('inicio') && request()->get('fin'), function ($q) {
-                $q->whereBetween('jobs.created_at', [request()->get('inicio'), request()->get('fin')]);
-            })
+        //         'jobs.id',
+        //     ])
+        //     ->where('job_experiences.is_default', 1)
+        //     ->where('job_types.is_default', 1)
+        //     ->where('jobs.is_pl', 1)
+        //     ->when(request()->get('inicio') && request()->get('fin'), function ($q) {
+        //         $q->whereBetween('jobs.created_at', [request()->get('inicio'), request()->get('fin')]);
+        //     })
 
-            ->get();
+        //     ->get();
 
-        $file = "reporteVacantes.txt";
+        $file =  'PL' . $this->codeIes . Carbon::now()->format('Ymd') .  ".txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
-        foreach ($data as $datum) {
+        // foreach ($data as $datum) {
 
-            fwrite($txt,        22235 . '|$$|');
+        //     fwrite($txt,        22235 . '|$$|');
 
-            fwrite($txt,        $datum->id . '|$$|');
+        //     fwrite($txt,        $datum->id . '|$$|');
 
-            fwrite($txt,       'PL-' . $this->htmlToPlainText($datum->title) . '|$$|');
+        //     fwrite($txt,       'PL-' . $this->htmlToPlainText($datum->title) . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->description) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->description) . '|$$|');
 
-            fwrite($txt,        $this->replaceyears($datum->job_experience) . '|$$|');
+        //     fwrite($txt,        $this->replaceyears($datum->job_experience) . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->qualification) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->qualification) . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->functional_area) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->functional_area) . '|$$|');
 
-            fwrite($txt,        $this->getSalary($datum->salary_from, $datum->salary_to) . '|$$|');
+        //     fwrite($txt,        $this->getSalary($datum->salary_from, $datum->salary_to) . '|$$|');
 
-            fwrite($txt,        $datum->num_of_positions . '|$$|');
+        //     fwrite($txt,        $datum->num_of_positions . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->position) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->position) . '|$$|');
 
-            fwrite($txt,        1 . '|$$|');
+        //     fwrite($txt,        1 . '|$$|');
 
-            fwrite($txt,        $datum->identificacion . '|$$|');
+        //     fwrite($txt,        $datum->identificacion . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->name) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->name) . '|$$|');
 
-            fwrite($txt,        'N' . '|$$|');
+        //     fwrite($txt,        'N' . '|$$|');
 
-            fwrite($txt,        Carbon::parse($datum->created_at)->format('d/m/Y') . '|$$|');
+        //     fwrite($txt,        Carbon::parse($datum->created_at)->format('d/m/Y') . '|$$|');
 
-            fwrite($txt,        Carbon::parse($datum->expiry_date)->format('d/m/Y') . '|$$|');
+        //     fwrite($txt,        Carbon::parse($datum->expiry_date)->format('d/m/Y') . '|$$|');
 
-            fwrite($txt,        strlen($datum->code) == 5 ? $datum->code : 0 . $datum->code  . '|$$|');
+        //     fwrite($txt,        strlen($datum->code) == 5 ? $datum->code : 0 . $datum->code  . '|$$|');
 
-            fwrite($txt,        '|$$|' . $this->htmlToPlainText($datum->industry) . '|$$|');
+        //     fwrite($txt,        '|$$|' . $this->htmlToPlainText($datum->industry) . '|$$|');
 
-            fwrite($txt,        $this->htmlToPlainText($datum->type_for_report) . '|$$|');
+        //     fwrite($txt,        $this->htmlToPlainText($datum->type_for_report) . '|$$|');
 
-            fwrite($txt, ($datum->is_freelance) ? '1' : '0') . '|$$|';
+        //     fwrite($txt, ($datum->is_freelance) ? '1' : '0') . '|$$|';
 
-            fwrite($txt,        '|$$|' . '0' . '|$$|');
+        //     fwrite($txt,        '|$$|' . '0' . '|$$|');
 
-            fwrite($txt,       'https://bolsaempleo.iescinoc.edu.co/job/' . $datum->slug);
+        //     fwrite($txt,       'https://bolsaempleo.iescinoc.edu.co/job/' . $datum->slug);
 
-            fwrite($txt,  PHP_EOL);
+        //     fwrite($txt,  PHP_EOL);
 
-            fwrite($txt,  "\r\n");
-        }
+        //     fwrite($txt,  "\r\n");
+        // }
 
         fclose($txt);
 
@@ -313,38 +349,60 @@ trait ReportsTxt
     public function OferentesMensualTxt()
     {
         $file = '';
+        $init =  request()->get('inicio');
+        $end =  request()->get('fin');
+        $date =  Carbon::now()->format('mY');
 
-        $data =  DB::table('users')
+        $data = DB::select("SELECT
+        02 AS codigoRegistro,
+        22293 AS codigoPrestador,
+        1 AS tipoIdentificacion,
+        national_id_card_number AS numeroIdentificacion,
+        iso31661 AS paisResidencia,
+        REPLACE(states.divipola, '000', '') AS departamento,
+        cities.divipola AS municipio,
+        date_format(users.updated_at, '%d%m%Y') AS fechaActualizacion
+    FROM
+        users
+        LEFT JOIN countries ON users.country_id = countries.country_id
+        LEFT JOIN states ON users.state_id = states.state_id
+        LEFT JOIN cities ON users.city_id = cities.city_id
+    WHERE
+        users.updated_at BETWEEN '$init'
+        AND '$end'
+    ORDER BY users.updated_at ASC");
 
-            ->join('cities', 'cities.city_id', 'users.city_id')
+        $header =  DB::select("SELECT
+        01 AS codigoTipoRegistro,
+        22293 AS codigoUnicoPrestador,
+        COUNT(id) AS numeroTotalDeRegistros,
+        date_format(now(), '%d%m%Y') AS fechaArchivo
+    FROM
+        users
+    WHERE
+        users.updated_at BETWEEN '$init'
+        AND '$end'")[0];
 
-            ->join('states', 'states.state_id', 'users.state_id')
+        $footer =  DB::select("SELECT
+        99 AS codigoTipoRegistro,
+        22293 AS codigoUnicoPrestador,
+        COUNT(id) AS numeroTotalDeRegistros,
+        date_format(now(), '%d%m%Y') AS fechaArchivo
+    FROM
+        users
+    WHERE
+        users.updated_at BETWEEN '$init'
+        AND '$end'")[0];
 
-            ->join('countries', 'countries.country_id', 'users.country_id')
-
-            ->selectRaw('"02" as codigo, users.id, users.national_id_card_number, country, cities.code, state, DATE_FORMAT(users.created_at,"%d%m%Y") as date')
-
-            ->where('users.is_active', 1)
-
-            ->where('users.verified', 1)
-
-            ->where('countries.lang', 'es')
-
-            ->when(request()->get('inicio') && request()->get('fin'), function ($q) {
-                $q->whereBetween('users.created_at', [request()->get('inicio'), request()->get('fin')]);
-            })
-
-            ->get();
-
-        $file = "OferentesMensual.txt";
+        $file = "DBO22293$date.txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
-        fwrite($txt,        01 . '|$|');
+        fwrite($txt,        $header->codigoTipoRegistro . $this->separatorSingle);
 
-        fwrite($txt,        22235 . '|$|');
+        fwrite($txt,        $header->codigoUnicoPrestador . $this->separatorSingle);
 
-        fwrite($txt,        count($data) + 2 . '|$|');
+        fwrite($txt,         $header->numeroTotalDeRegistros . $this->separatorSingle);
 
         fwrite($txt,        Carbon::now()->format('dmY'));
 
@@ -354,34 +412,34 @@ trait ReportsTxt
 
         foreach ($data as $datum) {
 
-            fwrite($txt,        $datum->codigo . '|$|');
+            fwrite($txt,        $datum->codigoRegistro . $this->separatorSingle);
 
-            fwrite($txt,        22235 . '|$|');
+            fwrite($txt,        $datum->codigoPrestador . $this->separatorSingle);
 
-            fwrite($txt,        1 . '|$|');
+            fwrite($txt,        $datum->tipoIdentificacion . $this->separatorSingle);
 
-            fwrite($txt,        $datum->national_id_card_number . '|$|');
+            fwrite($txt,        $datum->numeroIdentificacion . $this->separatorSingle);
 
-            fwrite($txt,        'CO' . '|$|');
+            fwrite($txt,        $datum->paisResidencia . $this->separatorSingle);
 
-            fwrite($txt,           substr($datum->code, 0, 2) . '|$|');
+            fwrite($txt,        $datum->departamento . $this->separatorSingle);
 
-            fwrite($txt,           substr($datum->code, 2, 5) . '|$|');
+            fwrite($txt,        $datum->municipio . $this->separatorSingle);
 
-            fwrite($txt,        $datum->date);
+            fwrite($txt,        $datum->fechaActualizacion);
 
             fwrite($txt,  PHP_EOL);
 
             fwrite($txt,  "\r\n");
         }
 
-        fwrite($txt,        99 . '|$|');
+        fwrite($txt,        $footer->codigoTipoRegistro . $this->separatorSingle);
 
-        fwrite($txt,        22235 . '|$|');
+        fwrite($txt,        $footer->codigoUnicoPrestador . $this->separatorSingle);
 
-        fwrite($txt,        count($data) . '|$|');
+        fwrite($txt,        $footer->numeroTotalDeRegistros . $this->separatorSingle);
 
-        fwrite($txt,        count($data) . '|$|');
+        fwrite($txt,        $footer->numeroTotalDeRegistros . $this->separatorSingle);
 
         fwrite($txt,        Carbon::now()->format('dmY'));
 
@@ -411,119 +469,186 @@ trait ReportsTxt
     public function OferentesSemestralTxt()
     {
 
-        $data = User::with([
-            'city' => function ($q) {
-                $q->select('city_id', 'city', 'lang', 'code');
-            },
-            'country' => function ($q) {
-                $q->select('country_id', 'country', 'lang')->where('lang', 'es');
-            },
-            'state' => function ($q) {
-                $q->select('state_id', 'state', 'lang');
-            },
-            'profileEducation',
-            'profileExperience'
+        $init =  request()->get('inicio');
+        $end =  request()->get('fin');
+        $date =  Carbon::now()->format('mY');
 
-        ])
-            ->when(request()->get('inicio') && request()->get('fin'), function ($q) {
-                $q->whereBetween('users.created_at', [request()->get('inicio'), request()->get('fin')]);
-            })
+        $header = DB::select("SELECT
+                        01 AS codigoTipoRegistro,
+                        22293 AS codigoUnicoPrestador,
+                        COUNT(id) AS numeroTotalDeRegistros,
+                        date_format(now(), '%d%m%Y') AS fechaArchivo
+                        FROM
+                        users
+                        WHERE
+                        users.updated_at BETWEEN '$init'
+                        AND '$end'")[0];
 
-            ->get();
+        $footer = DB::select("SELECT
+        99 AS codigoTipoRegistro,
+        22293 AS codigoUnicoPrestador,
+        COUNT(id) AS numeroTotalDeRegistros,
+        SUM(1) AS conteoDeControl,
+        date_format(LAST_DAY(MAX(updated_at)), '%d%m%Y') AS fechaDeCorte
+    FROM
+        users
+    WHERE
+        users.updated_at BETWEEN '$init'
+        AND '$end'")[0];
+
+        $data = DB::select("SELECT
+        02 AS codigoRegistro,
+        22293 AS codigoPrestador,
+        date_format(date_of_birth, '%d%m%Y') AS fechaNacimiento,
+        countries.iso31661 AS PaisNacimiento,
+        SUBSTRING(states.divipola, 1, 2) AS departamentoNacimiento,
+        SUBSTRING(cities.divipola, 3, 3) AS municipioNacimiento,
+        gender_id as sexo,
+        conuntriesr.	iso31661 AS paisResidencia,
+        SUBSTRING(statesr.divipola, 1, 2) AS departamentoResidencia,
+        SUBSTRING(citiesr.divipola, 3, 3) AS municipioResidencia,
+        'FA' AS codigoSegmentoFormacionAcademica,
+        functional_area AS tituloFormacionAcademica,
+        level_education AS nivelEducativo,
+        date_format(academic_training_completion_date, '%d%m%Y') AS fechaFinalizacionFormacionAcademica,
+        state_of_formation AS estadoFormacion,
+        170 AS paisFormacion,
+        'EL' AS codigoSegmentoExperienciaLaboral,
+        '' AS nombreCargo,
+        '' AS ocupacion,
+        '' AS paisExperiencia,
+        '' AS departamentoExperiencia,
+        '' AS municipioExperiencia,
+        '' AS fechaInicioExperiencia,
+        '' AS fechaFinExperiencia,
+        'MO' AS codigoSegmentoManoDeObra,
+        range_expected_salary AS aspiracionSalarial
+    FROM
+        users
+        LEFT JOIN countries ON users.nationality_id = countries.country_id
+        LEFT JOIN states ON users.state_birth_id = states.state_id
+        LEFT JOIN cities ON users.city_birth_id = cities.city_id
+        LEFT JOIN countries AS conuntriesr ON users.country_id = conuntriesr.country_id
+        LEFT JOIN states AS statesr ON users.state_id = statesr.state_id
+        LEFT JOIN cities AS citiesr ON users.city_id = citiesr.city_id
+        LEFT JOIN career_levels ON users.career_level_id = career_levels.career_level_id
+        LEFT JOIN functional_areas ON users.functional_area_id = functional_areas.functional_area_id
+    WHERE
+        users.updated_at BETWEEN '$init'
+        AND '$end' ");
 
 
-        $file = "test.txt";
+        $file = "IBHV22293$date.txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
+        fwrite($txt, $header->codigoTipoRegistro . $this->separatorSingle);
+        fwrite($txt, $header->codigoUnicoPrestador . $this->separatorSingle);
+        fwrite($txt, $header->numeroTotalDeRegistros . $this->separatorSingle);
+        fwrite($txt, $header->fechaArchivo);
+        fwrite($txt,  PHP_EOL);
+        fwrite($txt,  "\r\n");
+
+
         foreach ($data as $datum) {
 
-            fwrite($txt,        '02' . '|');
+            fwrite($txt,        '0' . $datum->codigoRegistro . $this->separatorSingle);
 
-            fwrite($txt,        '00000' . '|');
+            fwrite($txt,         $datum->codigoPrestador . $this->separatorSingle);
 
-            fwrite($txt,         Carbon::parse($datum->date_of_birth)->format('dmY') . '|');
+            fwrite($txt,         $datum->fechaNacimiento . $this->separatorSingle);
 
-            fwrite($txt,         169 . '|');
+            fwrite($txt,         $datum->PaisNacimiento . $this->separatorSingle);
 
-            fwrite($txt, (isset($datum->city)) ? substr($datum->city->code, 0, 2) . '|' : '' . '|');
+            fwrite($txt,         $datum->departamentoNacimiento . $this->separatorSingle);
 
-            fwrite($txt, (isset($datum->city)) ? substr($datum->city->code, 2, 5) . '|' : '' . '|');
+            fwrite($txt,         $datum->municipioNacimiento . $this->separatorSingle);
 
-            fwrite($txt, ($datum->gender_id == 1) ? 1 . '|' : 2  . '|');
+            fwrite($txt,         $datum->sexo . $this->separatorSingle);
 
-            fwrite($txt,         169 . '|');
+            fwrite($txt,         $datum->paisResidencia . $this->separatorSingle);
 
-            fwrite($txt, (isset($datum->city)) ? substr($datum->city->code, 0, 2) . '|' : '' . '|');
+            fwrite($txt,         $datum->departamentoResidencia . $this->separatorSingle);
 
-            fwrite($txt, (isset($datum->city)) ? substr($datum->city->code, 2, 5) . '|' : '' . '|');
+            fwrite($txt,         $datum->municipioResidencia . $this->separatorSingle);
 
-            fwrite($txt,        'FA' . '|');
+            fwrite($txt,        $datum->codigoSegmentoFormacionAcademica . $this->separatorSingle);
 
-            foreach ($datum->profileEducation as $edu) {
+            // foreach ($datum->profileEducation as $edu) {
 
-                fwrite($txt,        $edu->degree_title . '|');
+            fwrite($txt,        $datum->tituloFormacionAcademica . $this->separatorSingle);
 
-                fwrite($txt,        $edu->degreeLevel->degree_level . '|');
+            fwrite($txt,        $datum->nivelEducativo . $this->separatorSingle);
 
-                fwrite($txt,        Carbon::parse($edu->degreeLevel->date_completion)->format('dmY') . '|');
+            fwrite($txt,        $datum->fechaFinalizacionFormacionAcademica . $this->separatorSingle);
 
-                fwrite($txt,        $edu->degreeLevel->degree_result . '|');
+            fwrite($txt,        $datum->estadoFormacion . $this->separatorSingle);
 
-                fwrite($txt,        169 . '|');
-            }
+            fwrite($txt,        $datum->paisFormacion . $this->separatorSingle);
+            // }
 
-            fwrite($txt,        'EL' . '|');
+            fwrite($txt,        $datum->codigoSegmentoExperienciaLaboral . $this->separatorSingle);
 
-            foreach ($datum->profileExperience as $exp) {
+            // foreach ($datum->profileExperience as $exp) {
 
-                fwrite($txt,        $exp->title . '|');
+            fwrite($txt,         $datum->nombreCargo . $this->separatorSingle);
 
-                fwrite($txt,        169 . '|');
+            fwrite($txt,         $datum->ocupacion . $this->separatorSingle);
 
-                fwrite($txt, (isset($exp->load('city')->city->code)) ? substr($exp->load('city')->city->code, 0, 2) . '|' : '' . '|');
+            fwrite($txt,         $datum->paisExperiencia . $this->separatorSingle);
 
-                fwrite($txt, (isset($exp->load('city')->city->code)) ? substr($exp->load('city')->city->code, 0, 2) . '|' : '' . '|');
+            fwrite($txt,         $datum->departamentoExperiencia . $this->separatorSingle);
 
-                fwrite($txt,        Carbon::parse($exp->date_start)->format('dmY') . '|');
+            fwrite($txt,         $datum->municipioExperiencia . $this->separatorSingle);
 
-                fwrite($txt,        Carbon::parse($exp->date_end)->format('dmY') . '|');
-            }
+            fwrite($txt,         $datum->fechaInicioExperiencia . $this->separatorSingle);
 
-            $s = 11;
+            fwrite($txt,         $datum->fechaFinExperiencia . $this->separatorSingle);
+            // }
 
-            $b = 1000000;
+            // $s = 11;
 
-            $mi = $this->htmlToPlainText($datum->expected_salary);
+            // $b = 1060000;
 
-            if ($mi < $b)  $s = 1;
+            // $mi = $this->htmlToPlainText($datum->aspiracionSalarial);
 
-            if ($mi == $b)  $s = 2;
+            // if ($mi < $b)  $s = 1;
 
-            if ($mi >= $b && $mi < 2 * $b)  $s = 3;
+            // if ($mi == $b)  $s = 2;
 
-            if ($mi >= 2 * $b && $mi < 4 * $b)  $s = 4;
+            // if ($mi >= $b && $mi < 2 * $b)  $s = 3;
 
-            if ($mi >= 4 * $b && $mi < 6 * $b)  $s = 5;
+            // if ($mi >= 2 * $b && $mi < 4 * $b)  $s = 4;
 
-            if ($mi >= 6 * $b && $mi < 9 * $b)  $s = 6;
+            // if ($mi >= 4 * $b && $mi < 6 * $b)  $s = 5;
 
-            if ($mi >= 9 * $b && $mi < 12 * $b)  $s = 7;
+            // if ($mi >= 6 * $b && $mi < 9 * $b)  $s = 6;
 
-            if ($mi >= 12 * $b && $mi < 15 * $b)  $s = 8;
+            // if ($mi >= 9 * $b && $mi < 12 * $b)  $s = 7;
 
-            if ($mi >= 15 * $b && $mi < 19 * $b)  $s = 9;
+            // if ($mi >= 12 * $b && $mi < 15 * $b)  $s = 8;
 
-            if ($mi >= 20 * $b) $s = 10;
+            // if ($mi >= 15 * $b && $mi < 19 * $b)  $s = 9;
 
-            fwrite($txt,        'MO' . '|');
+            // if ($mi >= 20 * $b) $s = 10;
 
-            fwrite($txt,         $s);
+            fwrite($txt,        $datum->codigoSegmentoManoDeObra . $this->separatorSingle);
+
+            fwrite($txt,        $datum->aspiracionSalarial);
 
             fwrite($txt,  PHP_EOL);
 
             fwrite($txt,  "\r\n");
         }
+
+
+        fwrite($txt, 99 . $footer->codigoTipoRegistro . $this->separatorSingle);
+        fwrite($txt, $footer->codigoUnicoPrestador . $this->separatorSingle);
+        fwrite($txt, $footer->numeroTotalDeRegistros . $this->separatorSingle);
+        fwrite($txt, $footer->conteoDeControl . $this->separatorSingle);
+        fwrite($txt, Carbon::now()->format('dmY'));
+        fwrite($txt,  PHP_EOL);
+        fwrite($txt,  "\r\n");
 
         fclose($txt);
 
