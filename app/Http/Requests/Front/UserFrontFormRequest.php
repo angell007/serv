@@ -49,11 +49,25 @@ class UserFrontFormRequest extends Request
             //'career_level_id' => 'required',
             'industry_id' => 'required',
             'functional_area_id' => 'required',
-           // 'current_salary' => 'required|max:11',
+            // 'current_salary' => 'required|max:11',
             //'expected_salary' => 'required|max:11',
             //'salary_currency' => 'required|max:5',
             'street_address' => 'required|max:230',
             'image' => 'image',
+
+            'borncountry_id' => 'required',
+            'bornstate_id' => 'required',
+            'borncity_id' => 'required',
+
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'borncountry_id' => 'País de naciemiento',
+            'bornstate_id' => 'Departamento de nacimiento',
+            'borncity_id' => 'Ciudad de nacimiento'
         ];
     }
 
@@ -71,7 +85,7 @@ class UserFrontFormRequest extends Request
             //'father_name.required' => __('Father Name es requerido'),
             'date_of_birth.required' => __('Fecha de nacimiento es requerido'),
             //'gender_id.required' => __('Seleccione gender'),
-           // 'marital_status_id.required' => __('Seleccione marital status'),
+            // 'marital_status_id.required' => __('Seleccione marital status'),
             'nationality_id.required' => __('Seleccione una nacionalidad'),
             //'national_id_card_number.required' => __('National ID card# required'),
             'country_id.required' => __('Seleccione país'),
@@ -79,16 +93,15 @@ class UserFrontFormRequest extends Request
             'city_id.required' => __('Seleccione ciudad'),
             'phone.required' => __('Ingrese telefono'),
             //'mobile_num.required' => __('Ingrese mobile number'),
-           // 'job_experience_id.required' => __('Seleccione experience'),
-           // 'career_level_id.required' => __('Seleccione career level'),
+            // 'job_experience_id.required' => __('Seleccione experience'),
+            // 'career_level_id.required' => __('Seleccione career level'),
             'industry_id.required' => __('Seleccione industria'),
             'functional_area_id.required' => __('Seleccione area funcional'),
-           // 'current_salary.required' => __('Ingrese current salary'),
-           // 'expected_salary.required' => __('Ingrese expected salary'),
-           // 'salary_currency.required' => __('Seleccione salary currency'),
+            // 'current_salary.required' => __('Ingrese current salary'),
+            // 'expected_salary.required' => __('Ingrese expected salary'),
+            // 'salary_currency.required' => __('Seleccione salary currency'),
             'street_address.required' => __('Ingrese dirección'),
             'image.image' => __('Solo imagenes pueden ser subidas'),
         ];
     }
-
 }

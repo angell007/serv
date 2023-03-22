@@ -104,4 +104,41 @@ class AjaxController extends Controller
         echo $dd;
     }
 
+
+
+    public function filterLangStates2(Request $request)
+
+    {
+
+        $country_id = $request->input('country_id');
+
+        $state_id = $request->input('state_id');
+
+        $new_state_id = $request->input('new_state_id', 'bornstate_id');
+
+        $states = DataArrayHelper::langStatesArray($country_id);
+
+        $dd = Form::select('bornstate_id', ['' => __('Select State')] + $states, $state_id, array('id' => $new_state_id, 'class' => 'form-control'));
+
+        echo $dd;
+    }
+
+
+
+    public function filterLangCities2(Request $request)
+
+    {
+
+        $state_id = $request->input('state_id');
+
+        $city_id = $request->input('city_id');
+
+        $cities = DataArrayHelper::langCitiesArray($state_id);
+
+
+
+        $dd = Form::select('borncity_id', ['' => 'Seleccione Ciudad'] + $cities, $city_id, array('id' => 'borncity_id', 'class' => 'form-control'));
+
+        echo $dd;
+    }
 }

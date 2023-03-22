@@ -8,6 +8,8 @@ use Socialite;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Http\Requests\LoginCompanyRequest;
+
 
 class LoginController extends Controller
 {
@@ -22,7 +24,7 @@ class LoginController extends Controller
       |
      */
 
-use AuthenticatesUsers;
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -39,6 +41,35 @@ use AuthenticatesUsers;
     public function __construct()
     {
         $this->middleware('company.guest')->except('logout');
+    }
+
+    public function login(LoginCompanyRequest $request)
+    {
+        $this->validateLogin($request);
+
+        if (
+            method_exists($this, 'hasTooManyLoginAttempts') &&
+            $this->hasTooManyLoginAttempts($request)
+        ) {
+            $this->fireLockoutEvent($request);
+
+            return $this->sendLockoutResponse($request);
+        }
+
+        if ($this->attemptLogin($request)) {
+            if ($request->hasSession()) {
+                $request->session()->put('auth.password_confirmed_at', time());
+            }
+
+            return $this->sendLoginResponse($request);
+        }
+
+        // If the login attempt was unsuccessful we will increment the number of attempts
+        // to login and redirect the user back to the login form. Of course, when this
+        // user surpasses their maximum number of attempts they will get locked out.
+        $this->incrementLoginAttempts($request);
+
+        return $this->sendFailedLoginResponse($request);
     }
 
     /**
@@ -123,14 +154,13 @@ use AuthenticatesUsers;
         }
         $str = $user->getName() . $user->getId() . $user->getEmail();
         return Company::create([
-                    'name' => $user->getName(),
-                    'email' => $user->getEmail(),
-                    //'provider' => $provider,
-                    //'provider_id' => $user->getId(),
-                    'password' => bcrypt($str),
-                    'is_active' => 1,
-                    'verified' => 1,
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            //'provider' => $provider,
+            //'provider_id' => $user->getId(),
+            'password' => bcrypt($str),
+            'is_active' => 1,
+            'verified' => 1,
         ]);
     }
-
 }

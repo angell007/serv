@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 Route::get('company-home', 'Company\CompanyController@index')->name('company.home');
 Route::get('companies', 'Company\CompaniesController@company_listing')->name('company.listing');
 Route::get('company-profile', 'Company\CompanyController@companyProfile')->name('company.profile');

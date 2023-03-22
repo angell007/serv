@@ -132,6 +132,9 @@ class UserController extends Controller
         $user->salary_currency = $request->input('salary_currency');
         $user->street_address = $request->input('street_address');
         $user->is_subscribed = $request->input('is_subscribed', 0);
+        $user->borncountry_id = $request->input('borncountry_id');
+        $user->bornstate_id = $request->input('bornstate_id');
+        $user->borncity_id = $request->input('borncity_id');
 
         $user->update();
 

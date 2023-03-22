@@ -80,7 +80,7 @@
                             @endif
                             @if (Auth::guard('company')->check())
                                 <li class="nav-item postjob"><a href="{{ route('post.job') }}"
-                                        class="nav-link register">{{ __('Publicar una Oferta') }}</a> </li>
+                                        class="nav-link register">{{ __('Crear Oferta') }}</a> </li>
                                 <li class="nav-item dropdown userbtn"><a
                                         href="">{{ Auth::guard('company')->user()->printCompanyImage() }}</a>
                                     <ul class="dropdown-menu">

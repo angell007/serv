@@ -3,7 +3,7 @@
     <ul class="usernavdash">
         <li class="active"><a href="{{route('company.home')}}"><i class="fa fa-tachometer" aria-hidden="true"></i> Tablero de Control </a></li>
         <li><a href="{{ route('company.profile') }}"><i class="fa fa-pencil" aria-hidden="true"></i> {{__('Edit Profile')}}</a></li>
-        <li><a href="{{ route('post.job') }}"><i class="fa fa-desktop" aria-hidden="true"></i> Informe Ofertas Laborales </a></li>
+        <li><a href="{{ route('post.job') }}"><i class="fa fa-desktop" aria-hidden="true"></i> {{__('Crear Oferta Laboral')}} </a></li>
         <li><a href="{{ route('posted.jobs') }}"><i class="fa fa-black-tie" aria-hidden="true"></i> Ofertas Laborales </a></li>
 
         <li><a href="{{route('company.messages')}}"><i class="fa fa-envelope-o" aria-hidden="true"></i> Chat Interno </a></li>

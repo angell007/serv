@@ -2,42 +2,27 @@
 
 namespace App\Http\Controllers\Company;
 
-use Mail;
-use Hash;
-use File;
 use ImgUploader;
-use Auth;
-use Validator;
-use DB;
-use Input;
-use Redirect;
-use App\Subscription;
-use Newsletter;
 use App\User;
 use App\Company;
 use App\CompanyMessage;
 use App\ApplicantMessage;
-use App\Country;
-use App\CountryDetail;
-use App\State;
-use App\City;
-use App\Industry;
-use App\FavouriteCompany;
 use App\FavouriteApplicant;
-use App\OwnershipType;
 use App\JobApply;
 use Carbon\Carbon;
-use App\Helpers\MiscHelper;
 use App\Helpers\DataArrayHelper;
-use App\Http\Requests;
 use App\Mail\CompanyContactMail;
 use App\Mail\ApplicantContactMail;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Requests\Front\CompanyFrontFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\CompanyTrait;
 use App\Traits\Cron;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class CompanyController extends Controller
@@ -81,31 +66,30 @@ class CompanyController extends Controller
     }
     public function download($company)
     {
-        
-        if(Auth::guard('admin')->user() != null || Auth::guard('company')->user()->id ==  $company ){
+
+        if (Auth::guard('admin')->user() != null || Auth::guard('company')->user()->id ==  $company) {
             $c = Company::findOrFail($company);
-                return response()->download($c->camara_comercio);
+            return response()->download($c->camara_comercio);
         }
         flash('Error, No puedes acceder a este archivo')->error();
         return redirect()->back();
     }
 
     public function updateCompanyProfile(CompanyFrontFormRequest $request)
-    {   
-       
-       $url = '';
-       
-    
-     
-        $company = Company::findOrFail(Auth::guard('company')->user()->id);
-       if(request()->hasFile('camara_comercio')){
-           $file = $request->file('camara_comercio');
-             $destinationPath = 'uploads';
-             $file->move($destinationPath,$file->getClientOriginalName());
-             $url= $destinationPath.'/'.$file->getClientOriginalName();
-             $company->camara_comercio = $url;
+    {
 
-       }
+        $url = '';
+
+
+
+        $company = Company::findOrFail(Auth::guard('company')->user()->id);
+        if (request()->hasFile('camara_comercio')) {
+            $file = $request->file('camara_comercio');
+            $destinationPath = 'uploads';
+            $file->move($destinationPath, $file->getClientOriginalName());
+            $url = $destinationPath . '/' . $file->getClientOriginalName();
+            $company->camara_comercio = $url;
+        }
         /*         * **************************************** */
         if ($request->hasFile('logo')) {
             $is_deleted = $this->deleteCompanyLogo($company->id);
@@ -147,7 +131,7 @@ class CompanyController extends Controller
         $company->update();
         /*************************/
         // Subscription::where('email', 'like', $company->email)->delete();
-        
+
         // if ((bool)$company->is_subscribed) {
         //     $subscription = new Subscription();
         //     $subscription->email = $company->email;
@@ -164,7 +148,7 @@ class CompanyController extends Controller
 
 
         flash(__('Empresa ha sido actualizada'))->success();
-        return \Redirect::route('company.profile');
+        return Redirect::route('company.profile');
     }
 
     public function addToFavouriteApplicant(Request $request, $application_id, $user_id, $job_id, $company_id)
@@ -175,7 +159,7 @@ class CompanyController extends Controller
 
         $data_save = FavouriteApplicant::create($data);
         flash(__('Job seeker has been added in favorites list'))->success();
-        return \Redirect::route('applicant.profile', $application_id);
+        return Redirect::route('applicant.profile', $application_id);
     }
 
     public function removeFromFavouriteApplicant(Request $request, $application_id, $user_id, $job_id, $company_id)
@@ -189,7 +173,7 @@ class CompanyController extends Controller
             ->delete();
 
         flash(__('Job seeker has been removed from favorites list'))->success();
-        return \Redirect::route('applicant.profile', $application_id);
+        return Redirect::route('applicant.profile', $application_id);
     }
 
     public function companyDetail(Request $request, $company_slug)

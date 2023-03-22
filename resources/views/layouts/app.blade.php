@@ -4,8 +4,7 @@ if (!isset($seo)) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" class="{{ session('localeDir', 'ltr') }}"
-    dir="{{ session('localeDir', 'ltr') }}">
+<html lang="{{ app()->getLocale() }}" class="{{ session('localeDir', 'ltr') }}" dir="{{ session('localeDir', 'ltr') }}">
 
 <head>
     <meta charset="utf-8">
@@ -106,73 +105,97 @@ if (!isset($seo)) {
     <script src="{{ asset('/') }}js/script.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function(){
-                  $('.textC').on('input',function(e){
-             var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
-             console.log(words,$(this).val(),e.target.innerHTML)
-         if(words>=250){
-            $(this).val(text)
-         }else{ 
-             text=$(this).val()
-         }
-          })
-                $("#description").on('keyup',function(){
-                    
-                    console.log("paso");
-                })
-                
-                $(".number-1").each(function() {$(this).val(currency($(this).val())); });
-                $(".number-1").on({
-        "focus": function (event) {
-            $(event.target).select();
-        },
-        /*"keyup": function (event) {
-            $(event.target).val(function (index, value ) {
-                return value.replace(/\D/g, "")
-                            .replace(/([0-9])([0-9]{2})$/, '$1.$2')
-                            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
-            });
-        }*/
-        "input":function (event) {
-             $(event.target).val(currency($(event.target).val()))
-        }
-        
-    });
-                
-                
-                 $('select').select2();
-                
-                $(document).scrollTo('.has-error', 2000);
-                });
-                function currency(textCurrency){
-                  
-             var salary_from = textCurrency
-                     
-                    console.log(salary_from,salary_from.includes('.00'))
-                    salary_from=salary_from.replace('$','').replace(/,/g,'')
-                    
-                    if(salary_from.includes('.00')){
-                       salary_from=salary_from.replace(".00","")
-                    }
-                    if(salary_from.includes('.0') && !salary_from.includes('.00')){
-                        console.log("paso")
-                      salary_from= salary_from.replace(".0","") 
-                      salary_from= salary_from.substring(0, salary_from.length - 1);
-                    }
-                
-                    console.log()
-                    if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
-                    salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
-                    }else{
-                       salary_from='';
-                    }
-            return salary_from;
-        }
-                
-                function showProcessingForm(btn_id){		
-                $("#"+btn_id).val( 'Processing .....' );
-                $("#"+btn_id).attr('disabled','disabled');		
-                }
-            </script>
+                                          $('.textC').on('input',function(e){
+                                     var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
+                                     console.log(words,$(this).val(),e.target.innerHTML)
+                                 if(words>=250){
+                                    $(this).val(text)
+                                 }else{ 
+                                     text=$(this).val()
+                                 }
+                                  })
+                                        $("#description").on('keyup',function(){
+                                            
+                                            console.log("paso");
+                                        })
+                                        
+                                        $(".number-1").each(function() {$(this).val(currency($(this).val())); });
+                                        $(".number-1").on({
+                                "focus": function (event) {
+                                    $(event.target).select();
+                                },
+                                /*"keyup": function (event) {
+                                    $(event.target).val(function (index, value ) {
+                                        return value.replace(/\D/g, "")
+                                                    .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+                                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+                                    });
+                                }*/
+                                "input":function (event) {
+                                     $(event.target).val(currency($(event.target).val()))
+                                }
+                                
+                            });
+                                        
+                                        
+                                         $('select').select2();
+                                        
+                                        $(document).scrollTo('.has-error', 2000);
+                                        });
+                                        function currency(textCurrency){
+                                          
+                                     var salary_from = textCurrency
+                                             
+                                            console.log(salary_from,salary_from.includes('.00'))
+                                            salary_from=salary_from.replace('$','').replace(/,/g,'')
+                                            
+                                            if(salary_from.includes('.00')){
+                                               salary_from=salary_from.replace(".00","")
+                                            }
+                                            if(salary_from.includes('.0') && !salary_from.includes('.00')){
+                                                console.log("paso")
+                                              salary_from= salary_from.replace(".0","") 
+                                              salary_from= salary_from.substring(0, salary_from.length - 1);
+                                            }
+                                        
+                                            console.log()
+                                            if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
+                                            salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
+                                            }else{
+                                               salary_from='';
+                                            }
+                                    return salary_from;
+                                }
+                                        
+                                        function showProcessingForm(btn_id){		
+                                        $("#"+btn_id).val( 'Processing .....' );
+                                        $("#"+btn_id).attr('disabled','disabled');		
+                                        }
+
+
+
+                                                // Obtener todos los inputs de la página
+                                                let inputs = document.querySelectorAll('.pascalCase');
+
+                                                // Iterar sobre los inputs y agregar el evento onblur
+                                                for (let i = 0; i < inputs.length; i++) {
+                                                let input = inputs[i];
+                                                input.addEventListener('blur', function() {
+                                                    pascalCase(input);
+                                                });
+                                                }
+
+                                                // Función para convertir a pascal case
+                                                function pascalCase(input) {
+                                                let inputValue = input.value.toLowerCase();
+                                                let words = inputValue.split(" ");
+                                                let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+                                                let pascalCase = capitalizedWords.join(" ");
+                                                input.value = pascalCase;
+                                                }
+
+
+                                    </script>
 </body>
 
 </html>

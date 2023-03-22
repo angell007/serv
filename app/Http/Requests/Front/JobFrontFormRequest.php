@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Front;
 
 use App\Http\Requests\Request;
+use App\Rules\BaseSalaryRule;
+use Carbon\Carbon;
 
 class JobFrontFormRequest extends Request
 {
@@ -24,6 +26,8 @@ class JobFrontFormRequest extends Request
      */
     public function rules()
     {
+        $sevenDays = Carbon::now()->addDays(7)->toDateString();
+
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
@@ -37,23 +41,24 @@ class JobFrontFormRequest extends Request
                         "state_id" => "required",
                         "city_id" => "required",
                         //"is_freelance" => "required",
-                        //"career_level_id" => "required",
-                        //"salary_from" => "required|max:11",
-                        //"salary_to" => "required|max:11",
+                        "career_level_id" => "required",
+                        "salary_from" => ["required", "max:15", new BaseSalaryRule()],
+                        "salary_to" => "required|max:15",
                         //"salary_currency" => "required|max:5",
                         //"salary_period_id" => "required",
-                       // "hide_salary" => "required",
+                        // "hide_salary" => "required",
                         "functional_area_id" => "required",
                         "job_type_id" => "required",
                         //"job_shift_id" => "required",
-                        //"num_of_positions" => "required",
+                        "num_of_positions" => "required",
                         //"gender_id" => "required",
-                        "expiry_date" => "required",
-                        //"degree_level_id" => "required",
+                        "expiry_date" => "required|date|after:" . $sevenDays,
+                        "degree_level_id" => "required",
                         "job_experience_id" => "required",
                     ];
                 }
-            default:break;
+            default:
+                break;
         }
     }
 
@@ -67,21 +72,27 @@ class JobFrontFormRequest extends Request
             'state_id.required' => __('Please select State'),
             'city_id.required' => __('Please select City'),
             //'is_freelance.required' => __('Is this freelance Job?'),
-            //'career_level_id.required' => __('Please select Career level'),
-           // 'salary_from.required' => __('Please select salary from'),
-           // 'salary_to.required' => __('Please select salary to'),
-           // 'salary_currency.required' => __('Please select salary currency'),
+            'career_level_id.required' => __('Please select Career level'),
+            'salary_from.required' => __('Please select salary from'),
+            'salary_to.required' => __('Please select salary to'),
+            // 'salary_currency.required' => __('Please select salary currency'),
             //'salary_period_id.required' => __('Please select salary period'),
             //'hide_salary.required' => __('Is salary hidden?'),
             'functional_area_id.required' => __('Please select functional area'),
             'job_type_id.required' => __('Please select job type'),
             //'job_shift_id.required' => __('Please select job shift'),
-           // 'num_of_positions.required' => __('Please select number of positions'),
-           // 'gender_id.required' => __('Please select gender'),
+            'num_of_positions.required' => __('Please select number of positions'),
+            // 'gender_id.required' => __('Please select gender'),
             'expiry_date.required' => __('Please enter Job expiry date'),
-            //'degree_level_id.required' => __('Please select degree level'),
+            'degree_level_id.required' => __('Please select degree level'),
             'job_experience_id.required' => __('Please select job experience'),
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'expiry_date' => 'Fecha de expiración de la vacante',
+        ];
+    }
 }

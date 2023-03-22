@@ -36,7 +36,7 @@
                                 <div class="col-md-4 col-sm-4">                
                                     <div class="listbtn"><a href="{{route('list.favourite.applied.users', [$job->id])}}">{{__('List Short Listed Candidates')}}</a></div>
                                     <div class="listbtn"><a href="{{route('list.applied.users', [$job->id])}}">{{__('List Candidates')}}</a></div>
-                                    <div class="listbtn"><a href="{{route('edit.front.job', [$job->id])}}">{{__('Edit')}}</a></div>
+                                    {{-- <div class="listbtn"><a href="{{route('edit.front.job', [$job->id])}}">{{__('Edit')}}</a></div> --}}
                                     <div class="listbtn"><a href="javascript:;" onclick="deleteJob({{$job->id}});">{{__('Delete')}}</a></div>
                                 </div>
                             </div>
