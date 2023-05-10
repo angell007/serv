@@ -30,6 +30,11 @@ Route::get('/clear-cache', function () {
 
 Auth::routes();
 
+
+Route::view('/candidato-login', 'auth.login-user' )->name('login_candidato');
+Route::view('/company-login', 'auth.login-company' )->name('login_company');
+
+
 Route::get('/', 'IndexController@index')->name('index');
 Route::post('set-locale', 'IndexController@setLocale')->name('set.locale');
 Route::post('contratar_emp', 'documento_contratadoController@contrato');
