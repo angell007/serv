@@ -30,6 +30,7 @@ Route::get('/clear-cache', function () {
 
 Auth::routes();
 
+Route::get('sitemap', 'SitemapController@sitemap');
 
 Route::view('/candidato-login', 'auth.login-user' )->name('login_candidato');
 Route::view('/company-login', 'auth.login-company' )->name('login_company');
@@ -51,8 +52,8 @@ Route::get('blog/{slug}', 'BlogController@details')->name('blog-detail');
 Route::get('/blog/category/{blog}', 'BlogController@categories')->name('blog-category');
 Route::get('/company-change-message-status', 'CompanyMessagesController@change_message_status')->name('company-change-message-status');
 Route::get('/seeker-change-message-status', 'Job\SeekerSendController@change_message_status')->name('seeker-change-message-status');
-Route::get('/sitemap', 'SitemapController@index');
-Route::get('/sitemap/companies', 'SitemapController@companies');
+// Route::get('/sitemap', 'SitemapController@index');
+// Route::get('/sitemap/companies', 'SitemapController@companies');
 Route::get('/donwload-statictics-download',  'ExportController@download')->name('download');
 Route::get('/donwload-camara/{company?}',  'Company\CompanyController@download');
 Route::get('/donwload-camara-by-admin/{company?}',  'Admin\CompanyController@download');
