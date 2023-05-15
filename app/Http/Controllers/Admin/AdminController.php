@@ -125,46 +125,67 @@ class AdminController extends Controller
     }
 
 
-
     public function viewlistTrainings()
     {
         return view('admin.trainings.index');
     }
-
-
-
+    public function viewlistUsers()
+    {
+        return view('admin.trainings.users');
+    }
+    public function viewlistCompanies()
+    {
+        return view('admin.trainings.companies');
+    }
     public function viewlistParticipants($id)
-
     {
         return view('admin.trainings.participants', compact('id'));
     }
-
-    public function listTrainings()
+    public function viewlistParticipantsCompanies($id)
     {
-        $trainings = DB::table('trainings')->select('*');
-        return Datatables::of($trainings)
-            ->addColumn('action', function ($trainings) {
-                return
-                    '<a href="' . route('list.participants', ['id' => $trainings->id]) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Detalle </a>' .
-                    '<a href="javascript:void(0);" onclick="delete_training(' . $trainings->id . ');" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a';
-            })
-
-            ->make(true);
+        return view('admin.trainings.participants_companies', compact('id'));
     }
-
+    public function listTrainingsUsers()
+    {
+        $trainings = DB::table('trainings')->where('to', 'Empresas')->select('*');
+        return Datatables::of($trainings)->addColumn('action', function ($trainings) {
+            return '
+                    <a href="' . route('list.participants', ['id' => $trainings->id]) . '" class="btn btn-xs btn-primary">
+                    <i class="glyphicon glyphicon-edit">
+                    </i> Detalle 
+                    </a>' . '
+                    <a href="javascript:void(0);" onclick="delete_training(' . $trainings->id . ');" class="btn btn-xs btn-danger">
+                    <i class="glyphicon glyphicon-remove">
+                    </i> Delete
+                    </a';
+        })->make(true);
+    }
+    public function listTrainingsComapnies()
+    {
+        $trainings = DB::table('trainings')->where('to', 'Empresas')->select('*');
+        return Datatables::of($trainings)->addColumn('action', function ($trainings) {
+            return '
+                    <a href="' . route('list.participants.companies', ['id' => $trainings->id]) . '" class="btn btn-xs btn-primary">
+                    <i class="glyphicon glyphicon-edit">
+                    </i> Detalle 
+                    </a>' . '
+                    <a href="javascript:void(0);" onclick="delete_training(' . $trainings->id . ');" class="btn btn-xs btn-danger">
+                    <i class="glyphicon glyphicon-remove">
+                    </i> Delete
+                    </a';
+        })->make(true);
+    }
     public function listParticipants()
     {
         $participants = DB::table('participants')->select('*')->where('trainings_id', request()->get('id'));
-        return Datatables::of($participants)
-            ->addColumn('action', function ($participant) {
-                return '<a href="' . route('list.participants-delete', ['id' => $participant->id]) . '" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Eliminar </a>';
-            })
-
-            ->make(true);
+        return Datatables::of($participants)->addColumn('action', function ($participant) {
+            return '
+                    <a href="' . route('list.participants-delete', ['id' => $participant->id]) . '" class="btn btn-xs btn-danger">
+                    <i class="glyphicon glyphicon-trash">
+                    </i> Eliminar 
+                    </a>';
+        })->make(true);
     }
-
-
-
     public function listParticipantsDelete()
     {
         DB::table('participants')->delete(request()->get('id'));

@@ -35,6 +35,9 @@ Route::get('sitemap', 'SitemapController@sitemap');
 Route::view('/candidato-login', 'auth.login-user' )->name('login_candidato');
 Route::view('/company-login', 'auth.login-company' )->name('login_company');
 
+Route::view('/register-user', 'auth.register-user' )->name('register_candidato');
+Route::view('/register-company', 'auth.register-company' )->name('register_company');
+
 
 Route::get('/', 'IndexController@index')->name('index');
 Route::post('set-locale', 'IndexController@setLocale')->name('set.locale');
@@ -52,8 +55,6 @@ Route::get('blog/{slug}', 'BlogController@details')->name('blog-detail');
 Route::get('/blog/category/{blog}', 'BlogController@categories')->name('blog-category');
 Route::get('/company-change-message-status', 'CompanyMessagesController@change_message_status')->name('company-change-message-status');
 Route::get('/seeker-change-message-status', 'Job\SeekerSendController@change_message_status')->name('seeker-change-message-status');
-// Route::get('/sitemap', 'SitemapController@index');
-// Route::get('/sitemap/companies', 'SitemapController@companies');
 Route::get('/donwload-statictics-download',  'ExportController@download')->name('download');
 Route::get('/donwload-camara/{company?}',  'Company\CompanyController@download');
 Route::get('/donwload-camara-by-admin/{company?}',  'Admin\CompanyController@download');
@@ -81,14 +82,24 @@ Route::post('tinymce-image_upload-front', 'TinyMceController@uploadImage')->name
 Route::get('cronjob/send-alerts', 'AlertCronController@index')->name('send-alerts');
 Route::post('subscribe-newsletter', 'SubscriptionController@getSubscription')->name('subscribe.newsletter');
 
-Route::get('get-list-trainings', 'Admin\AdminController@listTrainings')->name('get-list-trainings');
 Route::get('admin/list/trainings', 'Admin\AdminController@viewlistTrainings')->name('list.trainings');
 Route::get('admin/list/participants/{id}', 'Admin\AdminController@viewlistParticipants')->name('list.participants');
+Route::get('admin/list/participants-companies/{id}', 'Admin\AdminController@viewlistParticipantsCompanies')->name('list.participants.companies');
+
 Route::get('list/participants-all', 'Admin\AdminController@listParticipants')->name('get-list-participants');
+
+Route::get('get-list-trainings', 'Admin\AdminController@listTrainingsUsers')->name('get-list-trainings');
 Route::get('list/participants-delete', 'Admin\AdminController@listParticipantsDelete')->name('list.participants-delete');
 
-Route::post('upload-participant', 'UserController@uploadParticipant')->name('upload-participant');
 
+Route::get('get-list-trainings-company', 'Admin\AdminController@listTrainingsComapnies')->name('get-list-trainings-company');
+Route::post('delete-training-company', 'Admin\AdminController@listParticipantsDelete')->name('delete-training-company');
+
+
+Route::get('admin/register_companies_training', 'Admin\AdminController@viewlistCompanies')->name('register_companies_training');
+Route::get('admin/register_users_training', 'Admin\AdminController@viewlistUsers')->name('register_users_training');
+
+Route::post('upload-participant', 'UserController@uploadParticipant')->name('upload-participant');
 
 
 Route::get('/pass', function (Request $request) {
@@ -251,3 +262,5 @@ Route::get('/download-cv-on-candidate/{file?}/{user}/{jobs}',  function ($a, $c,
 
   abort(404);
 });
+
+

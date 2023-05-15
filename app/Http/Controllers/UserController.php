@@ -49,7 +49,7 @@ class UserController extends Controller
     public function __construct()
     {
         //$this->middleware('auth', ['only' => ['myProfile', 'updateMyProfile', 'viewPublicProfile']]);
-        $this->middleware('auth', ['except' => ['showApplicantProfileEducation', 'changePass', 'showApplicantProfileProjects', 'showApplicantProfileExperience', 'showApplicantProfileSkills', 'showApplicantProfileLanguages']]);
+        $this->middleware('auth', ['except' => ['uploadParticipant', 'showApplicantProfileEducation', 'changePass', 'showApplicantProfileProjects', 'showApplicantProfileExperience', 'showApplicantProfileSkills', 'showApplicantProfileLanguages']]);
     }
 
     public function viewPublicProfile($id)

@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\Front;
 
-use Auth;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyFrontFormRequest extends Request
 {
@@ -25,12 +25,14 @@ class CompanyFrontFormRequest extends Request
      */
     public function rules()
     {
+        $company =  Auth::guard('company')->user();
+
         switch ($this->method()) {
             case 'PUT':
             case 'POST': {
                     $id = (int) Auth::guard('company')->user()->id;
                     $unique_id = ($id > 0) ? ',' . $id : '';
-                    return [
+                    $rules = [
                         "id" => "",
                         "name" => "required|max:150",
                         // 'email' => 'required|unique:companies,email' . $unique_id . '|email|max:100',
@@ -46,14 +48,22 @@ class CompanyFrontFormRequest extends Request
                         "established_in" => "required|max:12",
                         // "fax" => "required|max:30",
                         "phone" => "required|max:30",
-                        "logo" => 'image',
+                        "logo" => 'image|mimes:jpeg,png,jpg,gif|max:2048',
                         "country_id" => "required",
                         "state_id" => "required",
                         "city_id" => "required",
                     ];
                 }
-            default:break;
+            default:
+                break;
         }
+
+
+        if (!$company->logo) {
+            $rules['logo'] = 'required|image|mimes:jpeg,png,jpg,gif|max:2048';
+        }
+
+        return  $rules;
     }
 
     public function messages()
@@ -77,11 +87,10 @@ class CompanyFrontFormRequest extends Request
             'established_in.required' => __('Established in year required'),
             'fax.required' => __('Fax number required'),
             'phone.required' => __('Phone number required'),
-            'logo.image' => __('Only Images can be used as logo'),
+            // 'logo.image' => __('Only Images can be used as logo'),
             'country_id.required' => __('Please select country'),
             'state_id.required' => __('Please select state'),
             'city_id.required' => __('Please select city'),
         ];
     }
-
 }

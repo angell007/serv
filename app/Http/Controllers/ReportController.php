@@ -96,6 +96,12 @@ class ReportController extends Controller
             $str
         );
 
+        $str = str_replace(
+            array('/', '-', ';', ':', '.', ',', '(', ')', '=', '*', '+', '✓', '"', "'"),
+            array('', ' ', '', '', '', '', '', '', '','','', '', '', '' ),
+            $str
+        );
+
 
 
         $str = str_replace(
@@ -123,11 +129,20 @@ class ReportController extends Controller
         $pattern = "/[^0-9]/";
         $patternOnlyZeros = "/^0+$/";
 
-        if (preg_match($patternOnlyZeros, preg_replace($pattern, "", $salary_to)) || preg_match($patternOnlyZeros,  $salary_to)) {
+        if (!isset($salary_to)) {
+            if (preg_replace($pattern, "", $salary_from) == 000) return 0;
             return preg_replace($pattern, "", $salary_from);
+        }
+        
+        if (preg_match($patternOnlyZeros, preg_replace($pattern, "", $salary_to)) || preg_match($patternOnlyZeros,  $salary_to)) {
+            return preg_replace($pattern, "", 0);
         } else {
             return preg_replace($pattern, "", $salary_from) . '-' . preg_replace($pattern, "", $salary_to);
         }
+    }
+    public function getOnlyNumbers($salary)
+    {
+        return  (float)str_replace(array('$', ','), '', $salary);
     }
     public function replaceyears($years)
     {
@@ -155,6 +170,9 @@ class ReportController extends Controller
 
         $data = [];
 
+        ob_end_clean();
+        ob_start();
+
         switch (request()->get('tipo_reporte')) {
 
             case 1:
@@ -163,8 +181,7 @@ class ReportController extends Controller
                 return Excel::download(new InvoicesExport($data), 'Estudiantes' . '.xlsx');
             case 2:
                 $data = $this->getCompanys();
-
-                return Excel::download(new CompanysExport($data), 'Compañias' . '.xlsx');
+                return Excel::download(new CompanysExport(), 'Compañias' . '.xlsx');
             case 3:
                 $data = $this->getJobs();
 
@@ -362,8 +379,6 @@ class ReportController extends Controller
 
                     'career_levels.career_level',
 
-                    // 'job_skills.job_skill',
-
                     DB::raw("GROUP_CONCAT('--', `job_skills`.`job_skill`) As 'skill'"),
 
                     'functional_areas.functional_area',
@@ -384,11 +399,6 @@ class ReportController extends Controller
 
     public function getCompanys()
     {
-
-
-
-
-
         return  Company::join('cities', 'cities.id', 'companies.city_id')
 
             ->join('states', 'states.id', 'companies.state_id')
@@ -468,8 +478,6 @@ class ReportController extends Controller
 
         return Job::join('companies', 'companies.id', 'jobs.company_id')
 
-            // $data = Job::join('companies', 'companies.id', 'jobs.company_id')
-
             ->join('job_experiences', 'job_experiences.job_experience_id', 'jobs.job_experience_id')
 
             ->join('functional_areas', 'functional_areas.functional_area_id', 'jobs.functional_area_id')
@@ -538,10 +546,5 @@ class ReportController extends Controller
             })
 
             ->get();
-
-
-
-        // dd($data);
-
     }
 }

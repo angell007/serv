@@ -56,7 +56,7 @@ class ImageUploadingHelper
 
             return $fileName;
         } catch (\Throwable $th) {
-            dd($th->getMessage(), $th->getFile(), $th->getLine());
+            return response()->json([$th->getMessage(), $th->getFile(), $th->getLine()]);
         }
     }
 

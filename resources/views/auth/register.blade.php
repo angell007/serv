@@ -1,50 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
+    <!-- Header start -->
 
-<!-- Header start -->
+    @include('includes.header')
 
-@include('includes.header')
+    <!-- Header end -->
 
-<!-- Header end -->
+    <!-- Inner Page Title start -->
 
-<!-- Inner Page Title start -->
+    @include('includes.inner_page_title', ['page_title' => __('Register')])
 
-@include('includes.inner_page_title', ['page_title'=>__('Register')])
+    <!-- Inner Page Title end -->
 
-<!-- Inner Page Title end -->
+    <div class="listpgWraper">
 
-<div class="listpgWraper">
+        <div class="container">
 
-    <div class="container">
+            @include('flash::message')
 
-        @include('flash::message')
+            <div class="useraccountwrap">
 
-        <div class="useraccountwrap">
+                <div class="userccount">
 
-            <div class="userccount">
+                    <p>
+                        <b class="text my-3"> Soy : </b>
+                    </p>
 
-                <div class="userbtns">
+                    <div class="userbtns">
 
-                    <ul class="nav nav-tabs">
+                        <ul class="nav nav-tabs">
 
-                        <?php
+                            <li class="nav-item"><a class="nav-link"  href="/register-user"
+                                    aria-expanded="true">{{ __('Candidate') }}</a></li>
 
-                        $c_or_e = old('candidate_or_employer', 'candidate');
+                            <li class="nav-item"><a class="nav-link "  href="/register-company"
+                                    aria-expanded="false">{{ __('Employer') }}</a></li>
 
-                        ?>
+                        </ul>
 
-                        <li class="nav-item"><a class="nav-link {{($c_or_e == 'candidate')? 'active':''}}" data-toggle="tab" href="#candidate" aria-expanded="true">{{__('Candidate')}}</a></li>
+                    </div>
 
-                        <li class="nav-item"><a class="nav-link {{($c_or_e == 'employer')? 'active':''}}" data-toggle="tab" href="#employer" aria-expanded="false">{{__('Employer')}}</a></li>
+                    {{-- <div class="tab-content"> --}}
 
-                    </ul>
-
-                </div>
-
-                <div class="tab-content">
-
-                    <div id="candidate" class="formpanel tab-pane {{($c_or_e == 'candidate')? 'active':''}}">
+                    {{-- <div id="candidate" class="formpanel tab-pane {{($c_or_e == 'candidate')? 'active':''}}">
 
                         <form class="form-horizontal" method="POST" action="{{ route('register') }}">
 
@@ -107,14 +106,13 @@
                             <div class="formrow{{ $errors->has('is_subscribed') ? ' has-error' : '' }}">
 
                                 <?php
-
+                                
                                 $is_checked = '';
-
+                                
                                 if (old('is_subscribed', 1)) {
-
                                     $is_checked = 'checked="checked"';
                                 }
-
+                                
                                 ?>
 
                                 <input type="checkbox" value="1" name="is_subscribed" {{$is_checked}} />{{__('Suscríbete al boletín de noticias')}}
@@ -186,14 +184,13 @@
                             <div class="formrow{{ $errors->has('is_subscribed') ? ' has-error' : '' }}">
 
                                 <?php
-
+                                
                                 $is_checked = '';
-
+                                
                                 if (old('is_subscribed', 1)) {
-
                                     $is_checked = 'checked="checked"';
                                 }
-
+                                
                                 ?>
 
                                 <input type="checkbox" value="1" name="is_subscribed" {{$is_checked}} />{{__('Suscríbete al boletín de noticias')}}
@@ -223,30 +220,29 @@
                         </div>
                        
 
-                    </div>
+                    </div> --}}
+
+                    {{-- </div> --}}
+
+                    <!-- sign up form -->
+
+
+
+                    {{-- <div class="newuser"><i class="fa fa-user" aria-hidden="true"></i> Ya estas registrado? <a href="{{route('login')}}"> Ingresar </a></div> --}}
+
+                    <!-- sign up form end-->
+
+
 
                 </div>
 
-                <!-- sign up form -->
-                
-                
-
-                <div class="newuser"><i class="fa fa-user" aria-hidden="true"></i> Ya estas registrado? <a href="{{route('login')}}"> Ingresar </a></div>
-
-                <!-- sign up form end-->
-
-
-
             </div>
+
+
 
         </div>
 
-
-
     </div>
 
-</div>
-
-@include('includes.footer')
-
+    @include('includes.footer')
 @endsection

@@ -96,6 +96,13 @@
         {!! Form::select('default_currency_code',$currency_codes, null, array('class'=>'form-control', 'id'=>'default_currency_code')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'default_currency_code') !!}
     </div>
+
+    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'base_salary') !!}">
+        {!! Form::label('base_salary', 'Basic salary', ['class' => 'bold']) !!}
+        {!! Form::text('base_salary', null, array('class'=>'form-control', 'id'=>'base_salary', 'placeholder'=>'0.00')) !!}
+        {!! APFrmErrHelp::showErrors($errors, 'base_salary') !!}
+    </div>
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'site_street_address') !!}">
         {!! Form::label('site_street_address', 'Street Address', ['class' => 'bold']) !!}
         {!! Form::textarea('site_street_address', null, array('class'=>'form-control', 'id'=>'site_street_address', 'placeholder'=>'Street Address')) !!}

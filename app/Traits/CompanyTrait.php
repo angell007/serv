@@ -2,15 +2,30 @@
 
 namespace App\Traits;
 
-use DB;
-use File;
 use ImgUploader;
 use App\Company;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 
 trait CompanyTrait
 {
 
+
+    private function deleteCompanyCamaraComercio($id)
+    {
+        try {
+            $company = Company::findOrFail($id);
+            $image = $company->logo;
+            if (!empty($image)) {
+                File::delete(public_path() . 'uploads/' . $company->camara_comercio);
+            }
+            return 'ok';
+        } catch (ModelNotFoundException $e) {
+            return 'notok';
+        }
+    }
     private function deleteCompanyLogo($id)
     {
         try {
@@ -30,20 +45,20 @@ trait CompanyTrait
     private function getCompanyIdsAndNumJobs($limit = 16)
     {
         return DB::table('jobs')
-                        ->select('company_id', DB::raw('COUNT(jobs.company_id) AS num_jobs'))
-                        ->groupBy('company_id')
-                        ->orderBy('num_jobs', 'DESC')
-                        ->limit($limit)
-                        ->get();
+            ->select('company_id', DB::raw('COUNT(jobs.company_id) AS num_jobs'))
+            ->groupBy('company_id')
+            ->orderBy('num_jobs', 'DESC')
+            ->limit($limit)
+            ->get();
     }
 
     private function getIndustryIdsFromCompanies($limit = 16)
     {
         $companies = Company::select('industry_id')->active()->whereHas('jobs', function ($query) {
-                    $query->where('expiry_date', '>' ,Carbon::now())->active()->notExpire();
-                })->withCount(['jobs' => function ($query) {
-                        $query->active()->notExpire();
-                    }])->get();
+            $query->where('expiry_date', '>', Carbon::now())->active()->notExpire();
+        })->withCount(['jobs' => function ($query) {
+            $query->active()->notExpire();
+        }])->get();
 
         $industries_array = [];
         foreach ($companies as $company) {
@@ -60,8 +75,8 @@ trait CompanyTrait
     private function getCompanySEO($company)
     {
         $title = $company->name;
-		
-		$description = 'Company ';
+
+        $description = 'Company ';
         $keywords = '';
 
         $description .= ' ' . $company->name;
@@ -76,9 +91,6 @@ trait CompanyTrait
         $description .= ' ' . $company->location;
         $keywords .= $company->location . ',';
 
-        //$description .= ' ' . $company->description;
-        //$keywords .= $company->description . ',';
-
         $description .= ' ' . $company->getCountry('country');
         $keywords .= $company->getCountry('country') . ',';
 
@@ -89,12 +101,11 @@ trait CompanyTrait
         $keywords .= $company->getCity('city') . ',';
 
         $seo = (object) array(
-                    'seo_title' => $title,
-                    'seo_description' => $description,
-                    'seo_keywords' => $keywords,
-                    'seo_other' => ''
+            'seo_title' => $title,
+            'seo_description' => $description,
+            'seo_keywords' => $keywords,
+            'seo_other' => ''
         );
         return $seo;
     }
-
 }

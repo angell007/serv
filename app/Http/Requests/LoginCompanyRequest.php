@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\Exist;
 use App\Rules\isActive;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\DB;
 
 class LoginCompanyRequest extends FormRequest
 {
@@ -26,16 +26,8 @@ class LoginCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => new isActive
+            'email' => 'required'
+            // 'email' => [new Exist, new isActive]
         ];
     }
-
-
-    // public function message()
-    // {
-    //     return [
-    //         'email' => 'Por incumplimiento de las políticas de la Bolsa de Empleo su cuenta fue
-    //         suspendida. Para mayor información escríbenos a bolsadeempleo@itc.edu.co'
-    //     ];
-    // }
 }

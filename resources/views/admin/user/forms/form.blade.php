@@ -6,6 +6,13 @@
 @else
 {!! Form::open(array('method' => 'post', 'route' => 'store.user', 'class' => 'form', 'files'=>true)) !!}
 @endif
+
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ $progress }}%;" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100">
+        {{ $progress }}%
+    </div>
+</div>
+
 <div class="form-body">
     <input type="hidden" name="front_or_admin" value="admin" />
     <div class="row">

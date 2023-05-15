@@ -79,17 +79,18 @@ class CompanyController extends Controller
     {
 
         $url = '';
-
-
-
         $company = Company::findOrFail(Auth::guard('company')->user()->id);
         if (request()->hasFile('camara_comercio')) {
             $file = $request->file('camara_comercio');
+            $is_deleted = $this->deleteCompanyCamaraComercio($company->id);
+            $extension = $file->getClientOriginalExtension();
+            $newFileName = 'Camara de comercio.' . $extension; // Genera un nuevo nombre de archivo aleatorio
             $destinationPath = 'uploads';
-            $file->move($destinationPath, $file->getClientOriginalName());
-            $url = $destinationPath . '/' . $file->getClientOriginalName();
+            $file->move($destinationPath, $newFileName);
+            $url = $destinationPath . '/' . $newFileName;
             $company->camara_comercio = $url;
         }
+
         /*         * **************************************** */
         if ($request->hasFile('logo')) {
             $is_deleted = $this->deleteCompanyLogo($company->id);
@@ -99,7 +100,6 @@ class CompanyController extends Controller
         }
         /*         * ************************************** */
         $company->name = $request->input('name');
-        // $company->email = $request->input('email');
         if (!empty($request->input('password'))) {
             $company->password = Hash::make($request->input('password'));
         }
