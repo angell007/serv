@@ -49,13 +49,7 @@
         </ul>
         <div class="pagiWrap">
             <div class="row">
-                <div class="col-md-5">
-                    <div class="showreslt">
-                        <!-- {{__('Showing')}} : {{ $companies->firstItem() }} - {{ $companies->lastItem() }} {{__('Total')}} {{ $companies->total() }} -->
-                        {{__('Mostrando')}} : {{ $companies->firstItem() }} a {{ $companies->lastItem() }} {{__('de')}} {{ $companies->total() }} Registros
-                    </div>
-                </div>
-                <div class="col-md-7 text-right">
+                <div class="col-md-12 text-right">
                     @if(isset($companies) && count($companies))
                     {{ $companies->appends(request()->query())->links() }}
                     @endif

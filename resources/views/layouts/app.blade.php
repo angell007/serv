@@ -21,11 +21,14 @@ if (!isset($seo)) {
     <!-- Owl carousel -->
     <link href="{{ asset('/') }}css/owl.carousel.css" rel="stylesheet">
     <!-- Bootstrap -->
-    <link href="{{ asset('/') }}css/bootstrap.min.css" rel="stylesheet">
+    {{-- <link href="{{ asset('/') }}css/bootstrap.min.css" rel="stylesheet"> --}}
+    {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> --}}
+
     <!-- Font Awesome -->
     <link href="{{ asset('/') }}css/font-awesome.css" rel="stylesheet">
     <!-- Custom Style -->
     <link href="{{ asset('/') }}css/main.css?r=6" rel="stylesheet">
+
     @if (session('localeDir', 'ltr') == 'rtl')
         <!-- Rtl Style -->
         <link href="{{ asset('/') }}css/rtl-style.css" rel="stylesheet">
@@ -36,11 +39,7 @@ if (!isset($seo)) {
         type="text/css" />
     <link href="{{ asset('/') }}admin_assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet"
         type="text/css" />
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-          <script src="{{ asset('/') }}js/html5shiv.min.js"></script>
-          <script src="{{ asset('/') }}js/respond.min.js"></script>
-        <![endif]-->
+
     @stack('styles')
 
     <style>
@@ -48,12 +47,6 @@ if (!isset($seo)) {
             background-color: rgba(0, 0, 0, 0.15);
         }
 
-        /*         .modal-backdrop, */
-        /*.modal-backdrop.fade.in{*/
-        /*opacity: 1 !important;*/
-        /*filter: alpha(opacity=100) !important;*/
-        /*background: transparent;*/
-        /*}*/
 
         @media only screen and (max-width: 600px) {
 
@@ -77,9 +70,24 @@ if (!isset($seo)) {
 <body>
     @yield('content')
     <!-- Bootstrap's JavaScript -->
-    <script src="{{ asset('/') }}js/jquery.min.js"></script>
-    <script src="{{ asset('/') }}js/bootstrap.min.js"></script>
-    <script src="{{ asset('/') }}js/popper.js"></script>
+    {{-- <script src="{{ asset('/') }}js/jquery.min.js"></script> --}}
+    {{-- <script src="{{ asset('/') }}js/bootstrap.min.js"></script> --}}
+    {{-- <script src="{{ asset('/') }}js/popper.js"></script> --}}
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
+
     <!-- Owl carousel -->
     <script src="{{ asset('/') }}js/owl.carousel.js"></script>
     <script src="{{ asset('/') }}admin_assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
@@ -105,97 +113,97 @@ if (!isset($seo)) {
     <script src="{{ asset('/') }}js/script.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function(){
-                                          $('.textC').on('input',function(e){
-                                     var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
-                                     console.log(words,$(this).val(),e.target.innerHTML)
-                                 if(words>=250){
-                                    $(this).val(text)
-                                 }else{ 
-                                     text=$(this).val()
-                                 }
-                                  })
-                                        $("#description").on('keyup',function(){
-                                            
-                                            console.log("paso");
-                                        })
-                                        
-                                        $(".number-1").each(function() {$(this).val(currency($(this).val())); });
-                                        $(".number-1").on({
-                                "focus": function (event) {
-                                    $(event.target).select();
-                                },
-                                /*"keyup": function (event) {
-                                    $(event.target).val(function (index, value ) {
-                                        return value.replace(/\D/g, "")
-                                                    .replace(/([0-9])([0-9]{2})$/, '$1.$2')
-                                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
-                                    });
-                                }*/
-                                "input":function (event) {
-                                     $(event.target).val(currency($(event.target).val()))
-                                }
-                                
-                            });
-                                        
-                                        
-                                         $('select').select2();
-                                        
-                                        $(document).scrollTo('.has-error', 2000);
-                                        });
-                                        function currency(textCurrency){
-                                          
-                                     var salary_from = textCurrency
-                                             
-                                            console.log(salary_from,salary_from.includes('.00'))
-                                            salary_from=salary_from.replace('$','').replace(/,/g,'')
-                                            
-                                            if(salary_from.includes('.00')){
-                                               salary_from=salary_from.replace(".00","")
-                                            }
-                                            if(salary_from.includes('.0') && !salary_from.includes('.00')){
-                                                console.log("paso")
-                                              salary_from= salary_from.replace(".0","") 
-                                              salary_from= salary_from.substring(0, salary_from.length - 1);
-                                            }
-                                        
-                                            console.log()
-                                            if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
-                                            salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
-                                            }else{
-                                               salary_from='';
-                                            }
-                                    return salary_from;
-                                }
-                                        
-                                        function showProcessingForm(btn_id){		
-                                        $("#"+btn_id).val( 'Processing .....' );
-                                        $("#"+btn_id).attr('disabled','disabled');		
+                                                  $('.textC').on('input',function(e){
+                                             var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
+                                             console.log(words,$(this).val(),e.target.innerHTML)
+                                         if(words>=250){
+                                            $(this).val(text)
+                                         }else{ 
+                                             text=$(this).val()
+                                         }
+                                          })
+                                                $("#description").on('keyup',function(){
+                                                    
+                                                    console.log("paso");
+                                                })
+                                                
+                                                $(".number-1").each(function() {$(this).val(currency($(this).val())); });
+                                                $(".number-1").on({
+                                        "focus": function (event) {
+                                            $(event.target).select();
+                                        },
+                                        /*"keyup": function (event) {
+                                            $(event.target).val(function (index, value ) {
+                                                return value.replace(/\D/g, "")
+                                                            .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+                                                            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+                                            });
+                                        }*/
+                                        "input":function (event) {
+                                             $(event.target).val(currency($(event.target).val()))
                                         }
-
-
-
-                                                // Obtener todos los inputs de la página
-                                                let inputs = document.querySelectorAll('.pascalCase');
-
-                                                // Iterar sobre los inputs y agregar el evento onblur
-                                                for (let i = 0; i < inputs.length; i++) {
-                                                let input = inputs[i];
-                                                input.addEventListener('blur', function() {
-                                                    pascalCase(input);
+                                        
+                                    });
+                                                
+                                                
+                                                 $('select').select2();
+                                                
+                                                $(document).scrollTo('.has-error', 2000);
                                                 });
+                                                function currency(textCurrency){
+                                                  
+                                             var salary_from = textCurrency
+                                                     
+                                                    console.log(salary_from,salary_from.includes('.00'))
+                                                    salary_from=salary_from.replace('$','').replace(/,/g,'')
+                                                    
+                                                    if(salary_from.includes('.00')){
+                                                       salary_from=salary_from.replace(".00","")
+                                                    }
+                                                    if(salary_from.includes('.0') && !salary_from.includes('.00')){
+                                                        console.log("paso")
+                                                      salary_from= salary_from.replace(".0","") 
+                                                      salary_from= salary_from.substring(0, salary_from.length - 1);
+                                                    }
+                                                
+                                                    console.log()
+                                                    if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
+                                                    salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
+                                                    }else{
+                                                       salary_from='';
+                                                    }
+                                            return salary_from;
+                                        }
+                                                
+                                                function showProcessingForm(btn_id){		
+                                                $("#"+btn_id).val( 'Processing .....' );
+                                                $("#"+btn_id).attr('disabled','disabled');		
                                                 }
 
-                                                // Función para convertir a pascal case
-                                                function pascalCase(input) {
-                                                let inputValue = input.value.toLowerCase();
-                                                let words = inputValue.split(" ");
-                                                let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-                                                let pascalCase = capitalizedWords.join(" ");
-                                                input.value = pascalCase;
-                                                }
 
 
-                                    </script>
+                                                        // Obtener todos los inputs de la página
+                                                        let inputs = document.querySelectorAll('.pascalCase');
+
+                                                        // Iterar sobre los inputs y agregar el evento onblur
+                                                        for (let i = 0; i < inputs.length; i++) {
+                                                        let input = inputs[i];
+                                                        input.addEventListener('blur', function() {
+                                                            pascalCase(input);
+                                                        });
+                                                        }
+
+                                                        // Función para convertir a pascal case
+                                                        function pascalCase(input) {
+                                                        let inputValue = input.value.toLowerCase();
+                                                        let words = inputValue.split(" ");
+                                                        let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+                                                        let pascalCase = capitalizedWords.join(" ");
+                                                        input.value = pascalCase;
+                                                        }
+
+
+                                            </script>
 </body>
 
 </html>

@@ -69,7 +69,7 @@ class CompaniesController extends Controller
         }
 
 
-        $data['companies'] = $query->paginate(20);
+        $data['companies'] = $query->simplePaginate(20);
         return view('company.listing')->with($data);
     }
 
