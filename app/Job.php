@@ -249,5 +249,10 @@ class Job extends Model
         return $this->appliedUsers->pluck('user_id')->toArray();
     }
 
+    public function jobApply()
+    {
+        return $this->hasMany(JobApply::class);
+    }
+
     /*     * ***************************** */
 }

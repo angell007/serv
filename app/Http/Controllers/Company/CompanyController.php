@@ -16,9 +16,11 @@ use App\Mail\ApplicantContactMail;
 use Illuminate\Http\Request;
 use App\Http\Requests\Front\CompanyFrontFormRequest;
 use App\Http\Controllers\Controller;
+use App\Job;
 use App\Traits\CompanyTrait;
 use App\Traits\Cron;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -58,11 +60,37 @@ class CompanyController extends Controller
         $industries = DataArrayHelper::defaultIndustriesArray();
         $ownershipTypes = DataArrayHelper::defaultOwnershipTypesArray();
         $company = Company::findOrFail(Auth::guard('company')->user()->id);
+
+        $tableName = (new Company())->getTable();
+        $columns = DB::getSchemaBuilder()->getColumnListing($tableName);
+
+
+        $nocountables = ['package_start_date', 'package_end_date', 'remember_token'];
+
+        // Calcular la cantidad total de campos en la tabla
+        $totalCampos = count($columns) - 3;
+
+        // Calcular la cantidad de campos llenados en la tabla
+        $camposLlenados = 0;
+        foreach ($columns as $columna) {
+            // Verificar si el valor de la columna no es nulo o está vacío
+
+            if (!in_array($columna, $nocountables)) {
+                if (!empty($company->{$columna})) {
+                    $camposLlenados++;
+                }
+            }
+        }
+
+        // Calcular el porcentaje de campos llenados
+        $percentage = number_format(($camposLlenados / $totalCampos) * 100, 2);
+
         return view('company.edit_profile')
             ->with('company', $company)
             ->with('countries', $countries)
             ->with('industries', $industries)
-            ->with('ownershipTypes', $ownershipTypes);
+            ->with('ownershipTypes', $ownershipTypes)
+            ->with('percentage', $percentage);
     }
     public function download($company)
     {
@@ -358,6 +386,36 @@ class CompanyController extends Controller
         return view('company.follower_users')
             ->with('users', $users)
             ->with('company', $company);
+    }
+    public function companyVacancyExpiry()
+    {
+        //aplicaron pero no se contrataron
+        $auxjobs = Job::join('job_apply', 'job_apply.job_id', 'jobs.id')
+            ->where('expiry_date', '<', Carbon::now()->format('Y-m-d'))
+            ->where('job_apply.status', '<>', 'contratado')
+            ->where('jobs.company_id', Auth::guard('company')->user()->id)
+            ->where('jobs.close', 0)
+            ->get();
+
+        $jobs = Job::whereIn('id', $auxjobs->pluck('job_id')->unique())->get();
+
+        //Nadie aplica
+        $blank = Job::whereNotIn('id', function ($query) {
+            $query->select('job_id')->from('job_apply');
+        })
+            ->where('jobs.company_id', Auth::guard('company')->user()->id)
+            ->where('expiry_date', '<', Carbon::now()->format('Y-m-d'))
+            ->get();
+
+        return view('company.vacancy_expiry', compact('jobs', 'blank'));
+    }
+    public function CloseProcess()
+    {
+        $job =  Job::findOrFail(request()->get('job'));
+        $job->reazon = request()->get('mensaje');
+        $job->close = 1;
+        $job->save();
+        return back();
     }
 
     public function companyMessages()

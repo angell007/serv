@@ -13,7 +13,6 @@ class VacancyActiveExport implements FromView
     {
          $today = Carbon::now();
          
-    
          $totalTodaysUsers =  Job::
              join('companies', 'companies.id', 'jobs.company_id')
              ->where('jobs.is_active', 1)->where('expiry_date', '>=', $today)->get();

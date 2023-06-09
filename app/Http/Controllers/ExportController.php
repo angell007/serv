@@ -11,6 +11,8 @@ use App\Exports\VacancyInactiveExport;
 use App\Exports\VacancyApplyExport;
 use App\Exports\VacancyContractExport;
 use App\Exports\CompanysExport;
+use App\Exports\VacancyNoApplyExport;
+use App\Exports\VacancyRejetsExport;
 use Illuminate\Http\Request;
 
 
@@ -52,6 +54,12 @@ class ExportController extends Controller
                     break;
                 case 9:
                     return Excel::download(new VacancyContractExport, 'usersToday.xlsx');
+                    break;
+                case 10:
+                    return Excel::download(new VacancyRejetsExport, 'Rechazadas.xlsx');
+                    break;
+                case 11:
+                    return Excel::download(new VacancyNoApplyExport, 'Noaplicadas.xlsx');
                     break;
             }
             // return back();

@@ -23,11 +23,6 @@ class HomeController extends Controller
         //$this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $today = Carbon::now();
@@ -41,7 +36,31 @@ class HomeController extends Controller
         $recentJobs = Job::orderBy('id', 'DESC')->take(25)->get();
         $OfertaLaboral = JobApply::whereMonth('created_at',  $today->month)->count();
         $totalCompany = Company::whereMonth('created_at',  $today->month)->count();
+
         $contratado = JobApply::where("status", "=", "contratado")->whereMonth('created_at',  $today->month)->count();
+
+        //aplicaron pero no se contrataron
+        $rechazados = Job::join('job_apply', 'job_apply.job_id', '=', 'jobs.id')
+            ->where('expiry_date', '<', Carbon::now()->format('Y-m-d'))
+            ->where('job_apply.status', '<>', 'contratado')
+            ->count();
+
+        //Nadie aplica
+        $blank = Job::where('expiry_date', '<', Carbon::now()->format('Y-m-d'))
+            ->whereDoesntHave('jobApply', function ($query) {
+                $query->whereNotNull('status')
+                    ->where('status', '<>', 'contratado');
+            })
+            ->count();
+
+
+        //Nadie aplica
+        // $blank = Job::whereNotIn('id', function ($query) {
+        //     $query->select('job_id')->from('job_apply');
+        // })
+        //     ->where('expiry_date', '<', Carbon::now()->format('Y-m-d'))
+        //     ->count();
+
         return view('admin.home')
             ->with('totalActiveUsers', $totalActiveUsers)
             ->with('totalVerifiedUsers', $totalVerifiedUsers)
@@ -53,6 +72,8 @@ class HomeController extends Controller
             ->with('OfertaLaboral', $OfertaLaboral)
             ->with('totalCompany', $totalCompany)
             ->with('contratado', $contratado)
-            ->with('recentJobs', $recentJobs);
+            ->with('recentJobs', $recentJobs)
+            ->with('rechazados', $rechazados)
+            ->with('blank', $blank);
     }
 }

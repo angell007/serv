@@ -1,6 +1,16 @@
 {!! Form::model($company, array('method' => 'put', 'route' => array('update.company.profile'), 'class' => 'form', 'files'=>true)) !!}
 <h5>Información de la Empresa</h5>
 
+
+<div class="progress mb-3 " style="height: 20px;">
+    <i class="fa fa-info my-1"></i>
+    <div class="progress-bar progress-bar-striped progress-bar-animated mx-2" 
+    data-toggle="tooltip" title="Esta barra de carga representa el porcentaje de información que tienes en tu perfil registrada"
+    role="progressbar" style="width: {{ $percentage }}%;" aria-valuenow="{{ $percentage}}" aria-valuemin="0" aria-valuemax="100">{{ $percentage}} %</div>
+</div>
+
+
+
 <div class="row">
     <div class="col-md-6">
         <div class="formrow {!! APFrmErrHelp::hasError($errors, 'email') !!}">

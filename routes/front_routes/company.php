@@ -17,8 +17,11 @@ Route::get('remove-from-favourite-applicant/{application_id}/{user_id}/{job_id}/
 Route::get('applicant-profile/{application_id}', 'Company\CompanyController@applicantProfile')->name('applicant.profile');
 Route::get('user-profile/{id}', 'Company\CompanyController@userProfile')->name('user.profile');
 Route::get('company-followers', 'Company\CompanyController@companyFollowers')->name('company.followers');
+Route::get('vacancy_expiry', 'Company\CompanyController@companyVacancyExpiry')->name('company.vacancy_expiry');
 /* Route::get('company-messages', 'Company\CompanyController@companyMessages')->name('company.messages'); */
 Route::post('submit-message-seeker', 'CompanyMessagesController@submitnew_message_seeker')->name('submit-message-seeker');
+
+Route::post('close_process', 'Company\CompanyController@CloseProcess')->name('company.close_process');
 
 Route::get('company-messages', 'CompanyMessagesController@all_messages')->name('company.messages');
 Route::get('append-messages', 'CompanyMessagesController@append_messages')->name('append-message');

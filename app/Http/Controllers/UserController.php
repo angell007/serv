@@ -77,7 +77,34 @@ class UserController extends Controller
         $functionalAreas = DataArrayHelper::langFunctionalAreasArray();
 
         $upload_max_filesize = UploadedFile::getMaxFilesize() / (1048576);
+
         $user = User::findOrFail(Auth::user()->id);
+        $tableName = (new User())->getTable();
+        $columns = DB::getSchemaBuilder()->getColumnListing($tableName);
+
+
+        $nocountables = ['package_start_date', 'package_end_date', 'remember_token', 'first_lastname', 
+        'second_lastname' , 'provider', 'provider_id', 'verification_token' , 'jobs_quota',
+         'availed_jobs_quota', 'email_verified_at', 'lang', 'academic_training_completion_date', 'email_verified_at'];
+
+        // Calcular la cantidad total de campos en la tabla
+        $totalCampos = count($columns) - 14;
+
+        // Calcular la cantidad de campos llenados en la tabla
+        $camposLlenados = 0;
+        foreach ($columns as $columna) {
+            // Verificar si el valor de la columna no es nulo o está vacío
+
+            if (!in_array($columna, $nocountables)) {
+                if (!empty($user->{$columna})) {
+                    $camposLlenados++;
+                }
+            }
+        }
+
+        // Calcular el porcentaje de campos llenados
+        $percentage = number_format(($camposLlenados / $totalCampos) * 100, 2);
+
         return view('user.edit_profile')
             ->with('genders', $genders)
             ->with('maritalStatuses', $maritalStatuses)
@@ -88,7 +115,8 @@ class UserController extends Controller
             ->with('industries', $industries)
             ->with('functionalAreas', $functionalAreas)
             ->with('user', $user)
-            ->with('upload_max_filesize', $upload_max_filesize);
+            ->with('upload_max_filesize', $upload_max_filesize)
+            ->with('percentage', $percentage);
     }
 
     public function updateMyProfile(UserFrontFormRequest $request)
