@@ -112,7 +112,7 @@ class CompanyController extends Controller
             $file = $request->file('camara_comercio');
             $is_deleted = $this->deleteCompanyCamaraComercio($company->id);
             $extension = $file->getClientOriginalExtension();
-            $newFileName = 'Camara de comercio.' . $extension; // Genera un nuevo nombre de archivo aleatorio
+            $newFileName = 'Camara de comercio_' . $company->id . '.'. $extension; // Genera un nuevo nombre de archivo aleatorio
             $destinationPath = 'uploads';
             $file->move($destinationPath, $newFileName);
             $url = $destinationPath . '/' . $newFileName;

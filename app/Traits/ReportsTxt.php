@@ -173,7 +173,7 @@ trait ReportsTxt
 
             fwrite($txt,  PHP_EOL);
 
-            fwrite($txt,  "\r\n");
+            // fwrite($txt,  "\r\n");
         }
 
         fclose($txt);
@@ -408,7 +408,7 @@ trait ReportsTxt
 
         fwrite($txt,  PHP_EOL);
 
-        fwrite($txt,  "\r\n");
+        // fwrite($txt,  "\r\n");
 
         foreach ($data as $datum) {
 
@@ -430,7 +430,7 @@ trait ReportsTxt
 
             fwrite($txt,  PHP_EOL);
 
-            fwrite($txt,  "\r\n");
+            // fwrite($txt,  "\r\n");
         }
 
         fwrite($txt,        $footer->codigoTipoRegistro . $this->separatorSingle);
@@ -445,7 +445,7 @@ trait ReportsTxt
 
         fwrite($txt,  PHP_EOL);
 
-        fwrite($txt,  "\r\n");
+        // fwrite($txt,  "\r\n");
 
         fclose($txt);
 
@@ -547,7 +547,7 @@ trait ReportsTxt
         fwrite($txt, $header->numeroTotalDeRegistros . $this->separatorSingle);
         fwrite($txt, $header->fechaArchivo);
         fwrite($txt,  PHP_EOL);
-        fwrite($txt,  "\r\n");
+        // fwrite($txt,  "\r\n");
 
 
         foreach ($data as $datum) {
@@ -638,7 +638,7 @@ trait ReportsTxt
 
             fwrite($txt,  PHP_EOL);
 
-            fwrite($txt,  "\r\n");
+            // fwrite($txt,  "\r\n");
         }
 
 
@@ -648,7 +648,7 @@ trait ReportsTxt
         fwrite($txt, $footer->conteoDeControl . $this->separatorSingle);
         fwrite($txt, Carbon::now()->format('dmY'));
         fwrite($txt,  PHP_EOL);
-        fwrite($txt,  "\r\n");
+        // fwrite($txt,  "\r\n");
 
         fclose($txt);
 

@@ -25,6 +25,19 @@
         ]) !!}
             {!! APFrmErrHelp::showErrors($errors, 'title') !!} </div>
     </div>
+
+
+    <div class="col-md-12">
+        {!! Form::label('Schedule', __('Schedule'), ['class' => ['bold', 'my-1']]) !!}
+        <div class="formrow {!! APFrmErrHelp::hasError($errors, 'schedule') !!}"> {!! Form::text('schedule', null, [
+            'class' => 'pascalCase form-control',
+            'id' => 'schedule',
+            'placeholder' => __('Describa la jornada laboral'),
+        ]) !!}
+            {!! APFrmErrHelp::showErrors($errors, 'schedule') !!} </div>
+    </div>
+
+
     <div class="col-md-12">
         <div class="formrow {!! APFrmErrHelp::hasError($errors, 'description') !!}">
             {!! Form::label('Offer Description', __('Offer Description'), ['class' => 'bold']) !!}
@@ -219,7 +232,7 @@
     <div class="col-md-6">
         <label class="radio-inline">Mostrar informacion de la empresa</label>
         <br>
-        <input id="is_freelance_yes" class="my-1" name="mostrarInfo" type="radio" value="1">{{ __('Yes') }}
+        <input id="is_freelance_yes" class="my-1" name="mostrarInfo" type="radio" value="0">{{ __('No') }}
     </div>
 
     <br>
@@ -255,9 +268,9 @@
 
                 <?php
                 
-                $pcd_1 = '';
+                $pcd_2 = '';
                 
-                $pcd_2 = 'checked="checked"';
+                $pcd_1 = 'checked="checked"';
                 
                 if (old('pcd', isset($job) ? $job->pcd : 0) == 1) {
                     $pcd_1 = 'checked="checked"';

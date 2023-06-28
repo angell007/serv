@@ -91,13 +91,13 @@
 
                                             <option value="8">Reporte Remitidos</option>
 
-                                            <option value="9">Reporte Ofertas TXT </option>
+                                            <option value="9">RESOLUCIÓN 129 DE 2015 </option>
 
-                                            <option value="10">Reporte Oferentes TXT Mensual </option>
+                                            <option value="10">RESOLUCIÓN 138 DE 2017 MENSUAL</option>
 
-                                            <option value="11">Reporte Oferentes TXT Semestral </option>
+                                            <option value="11">RESOLUCIÓN 138 DE 2017 SEMESTRAL </option>
 
-                                            <option value="12">Reporte Practicas Laborales TXT</option>
+                                            <option value="12">RESOLUCIÓN 319 DE 2020</option>
 
                                         </select>
 

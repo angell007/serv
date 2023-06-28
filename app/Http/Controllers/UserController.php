@@ -163,6 +163,8 @@ class UserController extends Controller
         $user->borncountry_id = $request->input('borncountry_id');
         $user->bornstate_id = $request->input('bornstate_id');
         $user->borncity_id = $request->input('borncity_id');
+        
+        $user->doc_type = $request->input('doc_type');
 
         $user->update();
 

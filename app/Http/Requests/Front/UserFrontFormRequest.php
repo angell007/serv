@@ -4,6 +4,7 @@ namespace App\Http\Requests\Front;
 
 use Auth;
 use App\Http\Requests\Request;
+use Carbon\Carbon;
 
 class UserFrontFormRequest extends Request
 {
@@ -35,7 +36,18 @@ class UserFrontFormRequest extends Request
             'email' => 'required|unique:users,email' . $id_str . '|email|max:100',
             'password' => 'max:50',
             //'father_name' => 'required|max:80',
-            'date_of_birth' => 'required',
+
+            // 'date_of_birth' => 'required',
+
+            'date_of_birth' => ['required', function ($attribute, $value, $fail) {
+                $dateOfBirth = Carbon::parse($value);
+                $age = $dateOfBirth->age;
+
+                if ($age < 18) {
+                    $fail('Debes tener al menos 18 años de edad.');
+                }
+            }],
+
             //'gender_id' => 'required',
             //'marital_status_id' => 'required',
             'nationality_id' => 'required',

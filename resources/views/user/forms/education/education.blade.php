@@ -251,8 +251,17 @@
     $.post("{{ route('show.front.profile.education', $user->id) }}", {user_id: {{$user->id}}, _method: 'POST', _token: '{{ csrf_token() }}'})
 
             .done(function (response) {
+                                        // Crear un elemento temporal para contener la respuesta de la API
+                        const tempElement = document.createElement('div');
+                        tempElement.innerHTML = response;
+                        const panelGroup = tempElement.querySelector('.panel-group');
+                        const panelInfo = tempElement.querySelector('.panel-info');
+                        if (panelGroup && panelInfo) {
+                        } else {
+                                alert('Aún no has proporcionado información de educación.')
+                        }
 
-            $('#education_div').html(response);
+                       $('#education_div').html(response);
 
             });
 

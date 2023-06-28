@@ -245,6 +245,19 @@
             {!! APFrmErrHelp::showErrors($errors, 'date_of_birth') !!}
         </div>
     </div>
+
+
+    <div class="col-md-6" id="praticas">
+        <div class="formrow {!! APFrmErrHelp::hasError($errors, 'doc_type') !!}">
+            <label for="">Tipo de documento</label>
+            <select name="doc_type" id="doc_type">
+                <option value="CC" {{ isset($user) ? ($user->doc_type) == 'CC' ? 'selected' : '' : '' }} >CC</option>
+                <option value="NIT" {{ isset($user) ? ($user->doc_type) == 'NIT' ? 'selected' : '' : '' }}>NIT</option>
+            </select>
+        </div>
+    </div>
+
+
     <div class="col-md-6">
         <div class="formrow {!! APFrmErrHelp::hasError($errors, 'national_id_card_number') !!}">
             <label for="">{{ __('National ID') }}</label>
@@ -256,6 +269,7 @@
             {!! APFrmErrHelp::showErrors($errors, 'national_id_card_number') !!}
         </div>
     </div>
+
     <div class="col-md-6">
         <div class="formrow {!! APFrmErrHelp::hasError($errors, 'phone') !!}">
             <label for="">{{ __('Phone') }}</label>

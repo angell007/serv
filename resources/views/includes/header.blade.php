@@ -1,10 +1,19 @@
 <div class="header" style="    background-color: #e8e8e8;">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 col-md-12 col-12"> <a href="{{ url('/') }}" class="logo"><img
+            <div class="col-lg-2 col-md-12 col-12"> 
+
+                <a href="{{ url('/') }}" class="logo">
+                    <img class="responsive-image"
+                        src="{{ url('/images/bannerescuelatecnologicav2.jpg') }}"
+                        alt="{{ $siteSetting->site_name }}" />
+                </a>
+                
+                {{-- <a href="{{ url('/') }}" class="logo">
+                <img
                         style="    width: 500px;     max-width: 300%;"
                         src="{{ url('/images/bannerescuelatecnologicav2.jpg') }}"
-                        alt="{{ $siteSetting->site_name }}" /></a>
+                        alt="{{ $siteSetting->site_name }}" /></a> --}}
                 <div class="navbar-header navbar-light">
                     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
                         data-target="#nav-main" aria-controls="nav-main" aria-expanded="false"

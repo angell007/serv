@@ -9,6 +9,7 @@
         <li><a href="{{route('company.messages')}}"><i class="fa fa-envelope-o" aria-hidden="true"></i> Chat Interno </a></li>
         <li><a href="{{route('company.followers')}}"><i class="fa fa-users" aria-hidden="true"></i> Seguidores </a></li>
         <li><a href="{{route('company.vacancy_expiry')}}"><i class="fa fa-times" aria-hidden="true"></i> Ofertas vencidas </a></li>
+        <li><a href="https://forms.office.com/r/pW7L9RyNwK" target="_blank"><i class="fa fa-book" aria-hidden="true"></i> PQRSF </a></li>
         <li><a href="{{ route('company.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="fa fa-sign-out" aria-hidden="true"></i> {{__('Logout')}}</a>
             <form id="logout-form" action="{{ route('company.logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
         </li>

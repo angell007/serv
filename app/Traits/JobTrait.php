@@ -123,6 +123,8 @@ trait JobTrait
 
         $job->title = $request->input('title');
 
+        $job->schedule = $request->input('schedule');
+
         $job->description = $request->input('description');
 
         $job->benefits = $request->input('benefits');
@@ -133,7 +135,7 @@ trait JobTrait
 
         $job->city_id = $request->input('city_id');
 
-        $job->is_freelance = $request->input('is_freelance');
+        $job->is_freelance = $request->input('is_freelance', 1);
 
         $job->career_level_id = implode(',', $request->input('career_level_id'));
 

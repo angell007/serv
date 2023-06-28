@@ -62,6 +62,24 @@ if (!isset($seo)) {
                 max-width: 300% !important;
             }
 
+
+    .responsive-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    @media screen and (min-width: 768px) {
+        .responsive-image {
+            max-width: 50%;
+        }
+    }
+
+    @media screen and (min-width: 1024px) {
+        .responsive-image {
+            max-width: 500px;
+        }
+    }
+
         }
     </style>
 

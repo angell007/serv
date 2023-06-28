@@ -9,7 +9,8 @@ trait Lang
 
     public function scopeLang($query)
     {
-        return $query->where('lang', 'like', \App::getLocale());
+        return $query->where('lang', 'like', 'es');
+        // return $query->where('lang', 'like', \App::getLocale());
     }
 
     public function language()

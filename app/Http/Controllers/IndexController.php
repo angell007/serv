@@ -49,7 +49,10 @@ class IndexController extends Controller
         
         $showModal = DB::table('site_settings')->select('show_modal', 'banner')->where('id', 1272)->first();
 
-        $topCompanyIds = $this->getCompanyIdsAndNumJobs(16);
+        $topCompanyIds = $this->getCompanyIdsAndNumJobs(5);
+
+        // dd($topCompanyIds);
+
         $topFunctionalAreaIds = $this->getFunctionalAreaIdsAndNumJobs(32);
         $topIndustryIds = $this->getIndustryIdsFromCompanies(32);
         $topCityIds = $this->getCityIdsAndNumJobs(32);
