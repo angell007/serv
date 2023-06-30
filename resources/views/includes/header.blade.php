@@ -1,7 +1,7 @@
 <div class="header" style="    background-color: #e8e8e8;">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-2 col-md-12 col-12"> 
+            <div class="col-lg-6 col-md-6 col-6 mr-1"> 
 
                 <a href="{{ url('/') }}" class="logo">
                     <img class="responsive-image"
@@ -21,7 +21,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="col-lg-10 col-md-12 col-12">
+            <div class="col-lg-5 col-md-5 col-5">
 
                 <!-- Nav start -->
                 <nav class="navbar navbar-expand-lg navbar-light" style="    margin-top: 20px;">

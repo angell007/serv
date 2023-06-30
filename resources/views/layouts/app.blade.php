@@ -63,30 +63,78 @@ if (!isset($seo)) {
             }
 
 
-    .responsive-image {
-        max-width: 100%;
-        height: auto;
-    }
+            .responsive-image {
+                max-width: 100%;
+                height: auto;
+            }
 
-    @media screen and (min-width: 768px) {
-        .responsive-image {
-            max-width: 50%;
-        }
-    }
+            @media screen and (min-width: 768px) {
+                .responsive-image {
+                    max-width: 50%;
+                }
+            }
 
-    @media screen and (min-width: 1024px) {
-        .responsive-image {
-            max-width: 500px;
-        }
-    }
+            @media screen and (min-width: 1024px) {
+                .responsive-image {
+                    max-width: 500px;
+                }
+            }
 
         }
+
+
+        /* Estilos para el tema oscuro */
+        .dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .accessibility-buttons {
+            position: fixed;
+            top: 50%;
+            right: 5px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 9999;
+            /* font-size: 20px; */
+            /* padding: 10px; */
+            border-radius: 90%;
+        }
+
+        .btn-accessibility {
+            width: 40px;
+            /* Ajusta el ancho según tus necesidades */
+        }
+
+        @media (max-width: 767px) {
+            .accessibility-buttons {
+                display: none;
+            }
+        }
+
     </style>
 
 </head>
 
 <body>
+
+
+
     @yield('content')
+
+
+    <div class="accessibility-buttons">
+        <button id="reset-font-size" class="btn btn-light btn-sm ">A</button>
+        <button id="increase-font-size" class="btn btn-light btn-sm  ">A+</button>
+        <button id="decrease-font-size" class="btn btn-light btn-sm ">A-</button>
+        <button onclick="toggleDarkMode()" class="btn btn-light btn-sm ">DM</button>
+    </div>
+
+
+
+
     <!-- Bootstrap's JavaScript -->
 
     <script src="{{ asset('/') }}js/jquery.min.js"></script>
@@ -128,104 +176,169 @@ if (!isset($seo)) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/additional-methods.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    
+
     {!! NoCaptcha::renderJs() !!}
     @stack('scripts')
     <!-- Custom js -->
     <script src="{{ asset('/') }}js/script.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function(){
-                                                  $('.textC').on('input',function(e){
-                                             var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
-                                             console.log(words,$(this).val(),e.target.innerHTML)
-                                         if(words>=250){
-                                            $(this).val(text)
-                                         }else{ 
-                                             text=$(this).val()
-                                         }
-                                          })
-                                                $("#description").on('keyup',function(){
-                                                    
-                                                    console.log("paso");
-                                                })
-                                                
-                                                $(".number-1").each(function() {$(this).val(currency($(this).val())); });
-                                                $(".number-1").on({
-                                        "focus": function (event) {
-                                            $(event.target).select();
-                                        },
-                                        /*"keyup": function (event) {
-                                            $(event.target).val(function (index, value ) {
-                                                return value.replace(/\D/g, "")
-                                                            .replace(/([0-9])([0-9]{2})$/, '$1.$2')
-                                                            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
-                                            });
-                                        }*/
-                                        "input":function (event) {
-                                             $(event.target).val(currency($(event.target).val()))
-                                        }
-                                        
-                                    });
-                                                
-                                                
-                                                 $('select').select2();
-                                                
-                                                $(document).scrollTo('.has-error', 2000);
-                                                });
-                                                function currency(textCurrency){
-                                                  
-                                             var salary_from = textCurrency
-                                                     
-                                                    console.log(salary_from,salary_from.includes('.00'))
-                                                    salary_from=salary_from.replace('$','').replace(/,/g,'')
-                                                    
-                                                    if(salary_from.includes('.00')){
-                                                       salary_from=salary_from.replace(".00","")
-                                                    }
-                                                    if(salary_from.includes('.0') && !salary_from.includes('.00')){
-                                                        console.log("paso")
-                                                      salary_from= salary_from.replace(".0","") 
-                                                      salary_from= salary_from.substring(0, salary_from.length - 1);
-                                                    }
-                                                
-                                                    console.log()
-                                                    if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
-                                                    salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
-                                                    }else{
-                                                       salary_from='';
-                                                    }
-                                            return salary_from;
-                                        }
-                                                
-                                                function showProcessingForm(btn_id){		
-                                                $("#"+btn_id).val( 'Processing .....' );
-                                                $("#"+btn_id).attr('disabled','disabled');		
+                                                          $('.textC').on('input',function(e){
+                                                     var words= $(this).val().split(" ").length+$(this).val().split("\n").length-1
+                                                     console.log(words,$(this).val(),e.target.innerHTML)
+                                                 if(words>=250){
+                                                    $(this).val(text)
+                                                 }else{ 
+                                                     text=$(this).val()
+                                                 }
+                                                  })
+                                                        $("#description").on('keyup',function(){
+                                                            
+                                                            console.log("paso");
+                                                        })
+                                                        
+                                                        $(".number-1").each(function() {$(this).val(currency($(this).val())); });
+                                                        $(".number-1").on({
+                                                "focus": function (event) {
+                                                    $(event.target).select();
+                                                },
+                                                /*"keyup": function (event) {
+                                                    $(event.target).val(function (index, value ) {
+                                                        return value.replace(/\D/g, "")
+                                                                    .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+                                                                    .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+                                                    });
+                                                }*/
+                                                "input":function (event) {
+                                                     $(event.target).val(currency($(event.target).val()))
                                                 }
-
-
-
-                                                        // Obtener todos los inputs de la página
-                                                        let inputs = document.querySelectorAll('.pascalCase');
-
-                                                        // Iterar sobre los inputs y agregar el evento onblur
-                                                        for (let i = 0; i < inputs.length; i++) {
-                                                        let input = inputs[i];
-                                                        input.addEventListener('blur', function() {
-                                                            pascalCase(input);
+                                                
+                                            });
+                                                        
+                                                        
+                                                         $('select').select2();
+                                                        
+                                                        $(document).scrollTo('.has-error', 2000);
                                                         });
+                                                        function currency(textCurrency){
+                                                          
+                                                     var salary_from = textCurrency
+                                                             
+                                                            console.log(salary_from,salary_from.includes('.00'))
+                                                            salary_from=salary_from.replace('$','').replace(/,/g,'')
+                                                            
+                                                            if(salary_from.includes('.00')){
+                                                               salary_from=salary_from.replace(".00","")
+                                                            }
+                                                            if(salary_from.includes('.0') && !salary_from.includes('.00')){
+                                                                console.log("paso")
+                                                              salary_from= salary_from.replace(".0","") 
+                                                              salary_from= salary_from.substring(0, salary_from.length - 1);
+                                                            }
+                                                        
+                                                            console.log()
+                                                            if(salary_from!='' && !parseFloat(salary_from).toString().includes(NaN)){
+                                                            salary_from='$' + parseFloat(parseInt(salary_from), 10).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,").toString();  
+                                                            }else{
+                                                               salary_from='';
+                                                            }
+                                                    return salary_from;
+                                                }
+                                                        
+                                                        function showProcessingForm(btn_id){		
+                                                        $("#"+btn_id).val( 'Processing .....' );
+                                                        $("#"+btn_id).attr('disabled','disabled');		
                                                         }
 
-                                                        // Función para convertir a pascal case
-                                                        function pascalCase(input) {
-                                                        let inputValue = input.value.toLowerCase();
-                                                        let words = inputValue.split(" ");
-                                                        let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
-                                                        let pascalCase = capitalizedWords.join(" ");
-                                                        input.value = pascalCase;
-                                                        }
 
 
-                                            </script>
+                                                                // Obtener todos los inputs de la página
+                                                                let inputs = document.querySelectorAll('.pascalCase');
+
+                                                                // Iterar sobre los inputs y agregar el evento onblur
+                                                                for (let i = 0; i < inputs.length; i++) {
+                                                                let input = inputs[i];
+                                                                input.addEventListener('blur', function() {
+                                                                    pascalCase(input);
+                                                                });
+                                                                }
+
+                                                                // Función para convertir a pascal case
+                                                                function pascalCase(input) {
+                                                                let inputValue = input.value.toLowerCase();
+                                                                let words = inputValue.split(" ");
+                                                                let capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+                                                                let pascalCase = capitalizedWords.join(" ");
+                                                                input.value = pascalCase;
+                                                                }
+
+                                                                
+                                                                // Obtener los botones y los elementos de texto
+                                                                    const decreaseButton = document.getElementById('decrease-font-size');
+                                                                    const resetButton = document.getElementById('reset-font-size');
+                                                                    const increaseButton = document.getElementById('increase-font-size');
+                                                                    const elements = document.querySelectorAll('p, span, h1, h2, h3, h4, h5, h6, a, label, button  ');
+
+                                                                    // Establecer el tamaño de fuente base
+                                                                    let baseFontSize = 16;
+
+                                                                    // Función para aplicar el tamaño de fuente a los elementos
+                                                                    function applyFontSize(fontSize) {
+                                                                    elements.forEach(element => {
+                                                                        element.style.fontSize = `${fontSize}px`;
+                                                                    });
+                                                                    }
+
+                                                                    // Manejadores de eventos para los botones
+                                                                    decreaseButton.addEventListener('click', () => {
+                                                                    baseFontSize -= 2;
+                                                                    applyFontSize(baseFontSize);
+                                                                    });
+
+                                                                    resetButton.addEventListener('click', () => {
+                                                                    baseFontSize = 16;
+                                                                    applyFontSize(baseFontSize);
+                                                                    });
+
+                                                                    increaseButton.addEventListener('click', () => {
+                                                                    baseFontSize += 2;
+                                                                    applyFontSize(baseFontSize);
+                                                                    });
+
+
+
+                                                                    function toggleDarkMode() {
+                                                                        const body = document.body;
+                                                                        const divs = document.querySelectorAll('div');
+                                                                        const lis = document.querySelectorAll('li');
+                                                                        const tables = document.querySelectorAll('table');
+
+                                                                        body.classList.toggle('dark-mode');
+
+                                                                        lis.forEach((div) => {
+                                                                            if (!div.classList.contains('logo')) {
+                                                                            div.classList.toggle('dark-mode');
+                                                                            }
+                                                                        });
+
+                                                                        divs.forEach((div) => {
+                                                                            if (!div.classList.contains('logo')) {
+                                                                            div.classList.toggle('dark-mode');
+                                                                            }
+                                                                        });
+
+                                                                        tables.forEach((table) => {
+                                                                            if (!table.classList.contains('logo')) {
+                                                                            table.classList.toggle('dark-mode');
+                                                                            }
+                                                                        });
+                                                                        
+                                                                    }
+
+
+
+
+                                                    </script>
 </body>
 
 </html>
