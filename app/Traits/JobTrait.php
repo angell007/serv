@@ -432,21 +432,21 @@ trait JobTrait
             return Redirect::route('company.home');
         }
 
-        if ((bool)config('company.is_company_package_active')) {
+        // if ((bool)config('company.is_company_package_active')) {
 
-            if (
+        //     if (
 
-                ($company->package_end_date === null) ||
+        //         ($company->package_end_date === null) ||
 
-                ($company->package_end_date->lt(Carbon::now())) ||
+        //         ($company->package_end_date->lt(Carbon::now())) ||
 
-                ($company->jobs_quota <= $company->availed_jobs_quota)
+        //         ($company->jobs_quota <= $company->availed_jobs_quota)
 
-            ) {
-                flash(__('Por favor suscribete'))->error();
-                return Redirect::route('company.home');
-            }
-        }
+        //     ) {
+        //         flash(__('Por favor suscribete'))->error();
+        //         return Redirect::route('company.home');
+        //     }
+        // }
 
 
 

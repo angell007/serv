@@ -170,7 +170,7 @@
     </div>
     <div class="form-group">
         {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
-        <strong>{{$user->package_start_date->format('d M, Y')}}</strong> - <strong>{{$user->package_end_date->format('d M, Y')}}</strong>
+        {{-- <strong>{{$user->package_start_date->format('d M, Y')}}</strong> - <strong>{{$user->package_end_date->format('d M, Y')}}</strong> --}}
     </div>
     <div class="form-group">
         {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}

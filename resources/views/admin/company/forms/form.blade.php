@@ -184,8 +184,8 @@
         </div>
         <div class="form-group">
             {!! Form::label('package_Duration', 'Package Duration : ', ['class' => 'bold']) !!}
-            <strong>{{ $company->package_start_date->format('d M, Y') }}</strong> -
-            <strong>{{ $company->package_end_date->format('d M, Y') }}</strong>
+            {{-- <strong>{{ $company->package_start_date->format('d M, Y') }}</strong> - --}}
+            {{-- <strong>{{ $company->package_end_date->format('d M, Y') }}</strong> --}}
         </div>
         <div class="form-group">
             {!! Form::label('package_quota', 'Availed quota : ', ['class' => 'bold']) !!}

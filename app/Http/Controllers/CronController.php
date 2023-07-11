@@ -12,7 +12,7 @@ class CronController extends Controller
 
     public function checkPackageValidity()
     {
-        $this->runCheckPackageValidity();
+        // $this->runCheckPackageValidity();
     }
 
 }

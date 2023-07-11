@@ -23,7 +23,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['banner', 'uploadBanner', 'activeBAnner']);
-        $this->runCheckPackageValidity();
+        // $this->runCheckPackageValidity();
     }
 
     /**
@@ -62,7 +62,6 @@ class HomeController extends Controller
     {
             try {
                 if ($request->file('banner')) {
-                    // $documento = new Documentacion();
                     $filename = '_' . time() . '.' . $request->file('banner')->getClientOriginalExtension();
                     $request->file('banner')->move(public_path() . "/file", $filename);
                     
@@ -70,16 +69,10 @@ class HomeController extends Controller
                          ->update(['banner' => $filename]);
 
                      return redirect()->back()->with('success', 'ok');   
-
-                    // $documento->img = $filename;
-                    // $documento->save();
-                    // return response('Registrado exitosamente', 200);
                 }
             } catch (\Throwable $th) {
                      return redirect()->back()->with('error', $th->getMessage());   
-            }
-            // return response('Registrado exitosamente', 200);
-        
+            }        
     }
 
 }

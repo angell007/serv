@@ -265,16 +265,17 @@ class JobController extends Controller
             exit;
         }
         
-        if ((bool) config('jobseeker.is_jobseeker_package_active')) {
-            if (
-                    ($user->jobs_quota <= $user->availed_jobs_quota) ||
-                    ($user->package_end_date->lt(Carbon::now()))
-            ) {
-                flash(__('Please subscribe to package first'))->error();
-                return \Redirect::route('home');
-                exit;
-            }
-        }
+        // if ((bool) config('jobseeker.is_jobseeker_package_active')) {
+        //     if (
+        //             ($user->jobs_quota <= $user->availed_jobs_quota) ||
+        //             ($user->package_end_date->lt(Carbon::now()))
+        //     ) {
+        //         flash(__('Please subscribe to package first'))->error();
+        //         return \Redirect::route('home');
+        //         exit;
+        //     }
+        // }
+        
         if ($user->isAppliedOnJob($job->id)) {
             flash(__('You have already applied for this job'))->success();
             return \Redirect::route('job.detail', $job_slug);

@@ -41,7 +41,7 @@ class CompanyController extends Controller
     public function __construct()
     {
         $this->middleware('company', ['except' => ['companyDetail', 'sendContactForm']]);
-        $this->runCheckPackageValidity();
+        // $this->runCheckPackageValidity();
     }
 
     public function index()

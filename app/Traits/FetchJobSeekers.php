@@ -57,7 +57,7 @@ trait FetchJobSeekers
         'users.num_profile_views',
         'users.package_id',
         'users.package_start_date',
-        'users.package_end_date',
+        // 'users.package_end_date',
         'users.jobs_quota',
         'users.availed_jobs_quota',
         'users.search'
