@@ -30,13 +30,13 @@ Route::get('/clear-cache', function () {
 
 Auth::routes();
 
-Route::get('sitemap', 'SitemapController@sitemap');
+Route::get('sitemap', 'SitemapController@sitemap')->name('sitemap');
 
-Route::view('/candidato-login', 'auth.login-user' )->name('login_candidato');
-Route::view('/company-login', 'auth.login-company' )->name('login_company');
+Route::view('/candidato-login', 'auth.login-user')->name('login_candidato');
+Route::view('/company-login', 'auth.login-company')->name('login_company');
 
-Route::view('/register-user', 'auth.register-user' )->name('register_candidato');
-Route::view('/register-company', 'auth.register-company' )->name('register_company');
+Route::view('/register-user', 'auth.register-user')->name('register_candidato');
+Route::view('/register-company', 'auth.register-company')->name('register_company');
 
 
 Route::get('/', 'IndexController@index')->name('index');
@@ -262,5 +262,3 @@ Route::get('/download-cv-on-candidate/{file?}/{user}/{jobs}',  function ($a, $c,
 
   abort(404);
 });
-
-
