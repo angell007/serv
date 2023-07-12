@@ -18,6 +18,8 @@ class SitemapController extends Controller
     public function sitemap()
     {
 
+	//dd(public_path());
+
         // $baseUrl = 'https://test.bolsadeempleo.itc.edu.co/';
         
         $baseUrl = FacadesURL::to('/');
@@ -26,7 +28,7 @@ class SitemapController extends Controller
             ->configureCrawler(function (Crawler $crawler) {
                 $crawler->setMaximumDepth(1);
             })
-            ->writeToFile(public_path('sitemap.xml'));
+            ->writeToFile(public_path() . '/sitemap.xml');
 
         $sitemapPath = public_path('sitemap.xml');
         $content = file_get_contents($sitemapPath);
