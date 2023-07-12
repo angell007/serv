@@ -18,10 +18,6 @@ class SitemapController extends Controller
     public function sitemap()
     {
 
-	//dd(public_path());
-
-        // $baseUrl = 'https://test.bolsadeempleo.itc.edu.co/';
-        
         $baseUrl = FacadesURL::to('/');
 
         SitemapGenerator::create($baseUrl)

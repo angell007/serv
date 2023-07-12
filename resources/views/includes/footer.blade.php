@@ -52,7 +52,7 @@
                 <div class="phone"> <a
                         href="tel:{{ $siteSetting->site_phone_primary }}">{{ $siteSetting->site_phone_primary }}</a>
                 </div>
-                <div class="address text-white"> <a href="{{ route('sitemap') }}">Mapa del sitio</a></div>
+                <div class="address text-white"> <a href="{{ route('sitemap') }}" target="_blank">Mapa del sitio</a></div>
 
                 <!-- Social Icons end -->
 
