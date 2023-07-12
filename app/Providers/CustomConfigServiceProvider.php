@@ -20,7 +20,9 @@ class CustomConfigServiceProvider extends ServiceProvider
 
             $this->app['config']['mail'] = [
                 'driver' => 'smtp',
+                // 'host' => 'smtp.mailtrap.io',
                 'host' => 'smtp.gmail.com',
+                // 'port' => '2525',
                 'port' => '587',
                 'from' => [
                     'address' => 'bolsadeempleoetitc@gmail.com',
@@ -32,6 +34,8 @@ class CustomConfigServiceProvider extends ServiceProvider
                 ],
                 'encryption' => 'tls',
                 'username' => 'bolsadeempleoetitc@gmail.com',
+                // 'username' => '63683ffb660ebd',
+                // 'password' => 'ae10cb04b9606d',
                 'password' => 'xhwxoslujjozkxvb',
                 'sendmail' => $settings->mail_sendmail,
                 'pretend' => $settings->mail_pretend

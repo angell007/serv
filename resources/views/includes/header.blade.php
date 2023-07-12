@@ -119,7 +119,7 @@
                             @endif
                             @if (!Auth::user() && !Auth::guard('company')->user())
                                 <li class="nav-item {{ Request::url() == route('login') ? 'active' : '' }}"><a
-                                        href="{{ route('login') }}" class="nav-link">{{ __('login') }}</a> </li>
+                                        href="{{ route('login') }}" class="nav-link">{{ __('Ingreso') }}</a> </li>
                                 <li class="nav-item"><a href="{{ route('register') }}"
                                         class="nav-link register">{{ __('Register') }}</a> </li>
                             @endif
