@@ -49,25 +49,14 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
-                                    <div class="col-md-6">
-                                        {!! RecaptchaV3::field('login') !!}
-                                        @if ($errors->has('g-recaptcha-response'))
-                                            <span class="help-block">
-                                                <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
-                                            </span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                {{-- <div class="formrow{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
+                                <div class="formrow{{ $errors->has('g-recaptcha-response') ? ' has-error' : '' }}">
                                     {!! NoCaptcha::display() !!}
                                     @if ($errors->has('g-recaptcha-response'))
                                         <span class="help-block text-danger">
                                             <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                                         </span>
                                     @endif
-                                </div> --}}
+                                </div>
 
                                 <input type="submit" class="btn" value="{{ __('Login') }}">
                             </div>
