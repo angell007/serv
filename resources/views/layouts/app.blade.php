@@ -175,7 +175,7 @@ if (!isset($seo)) {
 
 
 
-    {{-- {!! NoCaptcha::renderJs() !!} --}}
+    {!! NoCaptcha::renderJs() !!}
 
     @stack('scripts')
 
