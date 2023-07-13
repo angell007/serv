@@ -18,10 +18,6 @@ Route::post('seeker-submit-messages', 'Job\SeekerSendController@submitnew_messag
 /*Custom Danilo*/
 Route::post('change-pass', 'UserController@changePass')->name('change-pass');
 
-
-
-
-
 Route::get('applicant-message-detail/{id}', 'UserController@applicantMessageDetail')->name('applicant.message.detail');
 /* * *********************************** */
 Route::post('show-front-profile-cvs/{id}', 'UserController@showProfileCvs')->name('show.front.profile.cvs');
