@@ -133,6 +133,7 @@ Route::get('/pass', function (Request $request) {
 });
 
 Route::get('fetch-documents', array_merge(['uses' => 'Admin\UserController@fetchUsersDataDocuments']))->name('fetch.data.documents');
+Route::get('download-capacitaciones', array_merge(['uses' => 'DownloadsController@download_capacitaciones']))->name('download_capacitaciones');
 
 
 Route::get('/send-mail', function (Request $request) {

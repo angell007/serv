@@ -60,6 +60,9 @@
 
                             <div class="actions">
 
+                                <a href="{{route('download_capacitaciones', ['id' => $id , 'model' => 'companies'])}}" class="btn btn-xs btn-info"> <i class="fa fa-download"></i> </a>
+
+                                
                                 <button data-toggle="modal" data-target="#fileModalUploaded" class="btn btn-xs btn-success">
 
                                     <i class="fa fa-user"></i> Agregar participante </button>

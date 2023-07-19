@@ -147,7 +147,7 @@ class AdminController extends Controller
     }
     public function listTrainingsUsers()
     {
-        $trainings = DB::table('trainings')->where('to', 'Empresas')->select('*');
+        $trainings = DB::table('trainings')->where('to', 'Oferentes')->select('*');
         return Datatables::of($trainings)->addColumn('action', function ($trainings) {
             return '
                     <a href="' . route('list.participants', ['id' => $trainings->id]) . '" class="btn btn-xs btn-primary">
