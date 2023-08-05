@@ -20,6 +20,7 @@
         @if (isset($company))
             <div class="col-md-6">
                 {{ ImgUploader::print_image("company_logos/$company->logo") }}
+                {{$company->logo}}
             </div>
         @endif
     </div>

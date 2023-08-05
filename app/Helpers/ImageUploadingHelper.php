@@ -149,8 +149,7 @@ class ImageUploadingHelper
             $dimensions = 'style="max-height:' . $height . 'px;"';
         }
         $image_src = self::print_image_src($image_path, $width, $height, $default_image, $alt_title_txt);
-        //  dd($image_src);
-
+        
         return '<img src="' . $image_src . '" ' . $dimensions . ' alt="' . $alt_title_txt . '" title="' . $alt_title_txt . '">';
     }
 
