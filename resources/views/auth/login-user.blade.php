@@ -20,11 +20,7 @@
                     </div>
 
                     <div id="candidate" class="formpanel tab-pane ">
-                        <div class="socialLogin">
-                            <!--<h5>{{ __('Login with Social') }}</h5>-->
-                            <!--<a href="{{ url('login/jobseeker/facebook') }}" class="fb"><i class="fa fa-facebook" aria-hidden="true"></i></a><a href="{{ url('login/jobseeker/twitter') }}" class="tw"><i class="fa fa-twitter" aria-hidden="true"></i></a>-->
-                            <!--<a href="{{ url('login/jobseeker/linkedin') }}" class="tw"><i class="fa fa-linkedin" aria-hidden="true"></i></a>-->
-                        </div>
+                        
                         <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                             {{ csrf_field() }}
                             <input type="hidden" name="candidate_or_employer" value="candidate" />

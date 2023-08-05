@@ -425,16 +425,12 @@ class ReportController extends Controller
 
                 'companies.location',
 
-                'companies.no_of_offices',
-
                 'companies.website',
 
                 'companies.no_of_employees',
 
                 'companies.established_in',
-
-                'companies.fax',
-
+                
                 'companies.phone',
 
                 'companies.logo',

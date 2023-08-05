@@ -6,16 +6,6 @@
         {!! Form::text('facebook_address', null, array('class'=>'form-control', 'id'=>'facebook_address', 'placeholder'=>'Facebook Address')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'facebook_address') !!}                                       
     </div>    
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'google_plus_address') !!}">
-        {!! Form::label('google_plus_address', 'Google+ Address', ['class' => 'bold']) !!}                    
-        {!! Form::text('google_plus_address', null, array('class'=>'form-control', 'id'=>'google_plus_address', 'placeholder'=>'Google+ Address')) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'google_plus_address') !!}                                       
-    </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'pinterest_address') !!}">
-        {!! Form::label('pinterest_address', 'Pinterest Address', ['class' => 'bold']) !!}                    
-        {!! Form::text('pinterest_address', null, array('class'=>'form-control', 'id'=>'pinterest_address', 'placeholder'=>'Pinterest Address')) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'pinterest_address') !!}                                       
-    </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'twitter_address') !!}">
         {!! Form::label('twitter_address', 'Twitter Address', ['class' => 'bold']) !!}                    
         {!! Form::text('twitter_address', null, array('class'=>'form-control', 'id'=>'twitter_address', 'placeholder'=>'Twitter Address')) !!}

@@ -229,35 +229,29 @@ class Company extends Authenticatable
 
         $html = '';
 
-        if (!empty($this->facebook))
+        // if (!empty($this->facebook))
 
-            $html .= '<a href="' . $this->facebook . '" target="_blank"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>';
+        //     $html .= '<a href="' . $this->facebook . '" target="_blank"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>';
 
+        // if (!empty($this->twitter))
 
+        //     $html .= '<a href="' . $this->twitter . '" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>';
 
-        if (!empty($this->twitter))
+        // if (!empty($this->linkedin))
 
-            $html .= '<a href="' . $this->twitter . '" target="_blank"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>';
-
-
-
-        if (!empty($this->linkedin))
-
-            $html .= '<a href="' . $this->linkedin . '" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>';
+        //     $html .= '<a href="' . $this->linkedin . '" target="_blank"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>';
 
 
 
-        if (!empty($this->google_plus))
+        // if (!empty($this->google_plus))
 
-            $html .= '<a href="' . $this->google_plus . '" target="_blank"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>';
-
-
-
-        if (!empty($this->pinterest))
-
-            $html .= '<a href="' . $this->pinterest . '" target="_blank"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a>';
+        //     $html .= '<a href="' . $this->google_plus . '" target="_blank"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>';
 
 
+
+        // if (!empty($this->pinterest))
+
+        //     $html .= '<a href="' . $this->pinterest . '" target="_blank"><i class="fa fa-pinterest-square" aria-hidden="true"></i></a>';
 
         return $html;
     }

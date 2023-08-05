@@ -87,9 +87,9 @@
 
                                             <option value="6">Reporte Aplicados</option>
 
-                                            <option value="7">Reporte Entrevistados</option>
+                                            {{-- <option value="7">Reporte Entrevistados</option> --}}
 
-                                            <option value="8">Reporte Remitidos</option>
+                                            {{-- <option value="8">Reporte Remitidos</option> --}}
 
                                             <option value="9">RESOLUCIÓN 129 DE 2015 </option>
 

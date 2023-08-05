@@ -87,18 +87,12 @@ class CompanyController extends Controller
         $company->description = $request->input('description');
         $company->location = $request->input('location');
         $company->map = $request->input('map');
-        $company->no_of_offices = $request->input('no_of_offices');
         $website = $request->input('website');
         $company->website = (false === strpos($website, 'http')) ? 'http://' . $website : $website;
         $company->no_of_employees = $request->input('no_of_employees');
         $company->established_in = $request->input('established_in');
-        $company->fax = $request->input('fax');
         $company->phone = $request->input('phone');
-        $company->facebook = $request->input('facebook');
-        $company->twitter = $request->input('twitter');
         $company->linkedin = $request->input('linkedin');
-        $company->google_plus = $request->input('google_plus');
-        $company->pinterest = $request->input('pinterest');
         $company->country_id = $request->input('country_id');
         $company->state_id = $request->input('state_id');
         $company->city_id = $request->input('city_id');
@@ -181,18 +175,12 @@ class CompanyController extends Controller
         $company->description = $request->input('description');
         $company->location = $request->input('location');
         $company->map = $request->input('map');
-        $company->no_of_offices = $request->input('no_of_offices');
         $website = $request->input('website');
         $company->website = (false === strpos($website, 'http')) ? 'http://' . $website : $website;
         $company->no_of_employees = $request->input('no_of_employees');
         $company->established_in = $request->input('established_in');
-        $company->fax = $request->input('fax');
         $company->phone = $request->input('phone');
-        $company->facebook = $request->input('facebook');
-        $company->twitter = $request->input('twitter');
         $company->linkedin = $request->input('linkedin');
-        $company->google_plus = $request->input('google_plus');
-        $company->pinterest = $request->input('pinterest');
         $company->country_id = $request->input('country_id');
         $company->state_id = $request->input('state_id');
         $company->city_id = $request->input('city_id');
@@ -243,11 +231,9 @@ class CompanyController extends Controller
             'companies.ownership_type_id',
             'companies.description',
             'companies.location',
-            // 'companies.no_of_offices',
             'companies.website',
             'companies.no_of_employees',
             'companies.established_in',
-            // 'companies.fax',
             'companies.phone',
             'companies.logo',
             'companies.country_id',

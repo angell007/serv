@@ -11,11 +11,11 @@ class UserTodayExport implements FromView
 {
     public function view(): View
     {
-         $today = Carbon::now();
-         $totalTodaysUsers = User::where('created_at', 'like', $today->toDateString() . '%')->get();
-         
-        return view('export.staticticsuser', [
-            'users' => $totalTodaysUsers
-        ]);
+        $today = Carbon::now();
+        $totalTodaysUsers = User::join('functional_areas', 'functional_areas.functional_area_id', 'users.functional_area_id')
+            ->where('created_at', 'like', $today->toDateString() . '%')
+            ->distinct('users.id')
+            ->get();
+        return view('export.staticticsuser', ['users' => $totalTodaysUsers]);
     }
 }

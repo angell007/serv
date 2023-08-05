@@ -1,18 +1,56 @@
 <table>
+
     <thead>
-    <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Vacante</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach($vacancys as $user)
+
         <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->title }}</td>
+            <th>Empresa</th>
+
+            <th>Vacante</th>
+
+            <th>Descripcion</th>
+
+            <th>Candidato</th>
+
+            <th>Identificacion</th>
+
+            <th>Programa</th>
+
+            <th>Email de candidato</th>
+
+            <th>Contacto</th>
+
+            <th>Rol</th>
+
         </tr>
-    @endforeach
+
+    </thead>
+
+    <tbody>
+
+        @foreach ($vacancys as $user)
+            <tr>
+
+                <td>{{ $user->company->name ?? $user->company }}</td>
+
+                <td>{{ $user->title }}</td>
+
+                <td>{{ strip_tags(html_entity_decode($user->description)) }}</td>
+
+                <td>{{ $user->candidato }}</td>
+
+                <td>{{ $user->identificacion }}</td>
+
+                <td>{{ $user->programa }}</td>
+
+                <td>{{ $user->email }}</td>
+
+                <td>{{ strip_tags(html_entity_decode($user->mobile_num)) }}</td>
+
+                <td>{{ $user->rol }}</td>
+
+            </tr>
+        @endforeach
+
     </tbody>
+
 </table>

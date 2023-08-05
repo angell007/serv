@@ -82,12 +82,6 @@
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'map') !!}"> {!! Form::label('map', 'Google Map', ['class' => 'bold']) !!}
         {!! Form::textarea('map', null, ['class' => 'form-control', 'id' => 'map', 'placeholder' => 'Google Map']) !!}
         {!! APFrmErrHelp::showErrors($errors, 'map') !!} </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'no_of_offices') !!}"> {!! Form::label('no_of_offices', 'Numero de oficinas', ['class' => 'bold']) !!}
-        {!! Form::select('no_of_offices', ['' => 'Seleccione num oficinas'] + MiscHelper::getNumOffices(), null, [
-            'class' => 'form-control',
-            'id' => 'no_of_offices',
-        ]) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'no_of_offices') !!} </div>
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'website') !!}"> {!! Form::label('website', 'Sitio web', ['class' => 'bold']) !!}
         {!! Form::text('website', null, ['class' => 'form-control', 'id' => 'website', 'placeholder' => 'Sitio web']) !!}
         {!! APFrmErrHelp::showErrors($errors, 'website') !!} </div>
@@ -103,9 +97,7 @@
             'id' => 'established_in',
         ]) !!}
         {!! APFrmErrHelp::showErrors($errors, 'established_in') !!} </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'fax') !!}"> {!! Form::label('fax', 'Fax #', ['class' => 'bold']) !!}
-        {!! Form::text('fax', null, ['class' => 'form-control', 'id' => 'fax', 'placeholder' => 'Fax #']) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'fax') !!} </div>
+   
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'phone') !!}"> {!! Form::label('phone', 'Numero telefonico', ['class' => 'bold']) !!}
         {!! Form::text('phone', null, [
             'class' => 'form-control',
@@ -113,38 +105,11 @@
             'placeholder' => 'Numero telefonico',
         ]) !!}
         {!! APFrmErrHelp::showErrors($errors, 'phone') !!} </div>
-
-
-
-
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'facebook') !!}"> {!! Form::label('facebook', 'Direccion de facebook', ['class' => 'bold']) !!}
-        {!! Form::text('facebook', null, [
-            'class' => 'form-control',
-            'id' => 'facebook',
-            'placeholder' => 'Direccion de facebook',
-        ]) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'facebook') !!} </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'twitter') !!}"> {!! Form::label('twitter', 'Twitter', ['class' => 'bold']) !!}
-        {!! Form::text('twitter', null, ['class' => 'form-control', 'id' => 'twitter', 'placeholder' => 'Twitter']) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'twitter') !!} </div>
-
+   
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'linkedin') !!}"> {!! Form::label('linkedin', 'Linkedin', ['class' => 'bold']) !!}
         {!! Form::text('linkedin', null, ['class' => 'form-control', 'id' => 'linkedin', 'placeholder' => 'Linkedin']) !!}
         {!! APFrmErrHelp::showErrors($errors, 'linkedin') !!} </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'google_plus') !!}"> {!! Form::label('google_plus', 'Google+', ['class' => 'bold']) !!}
-        {!! Form::text('google_plus', null, [
-            'class' => 'form-control',
-            'id' => 'google_plus',
-            'placeholder' => 'Google+',
-        ]) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'google_plus') !!} </div>
-    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'pinterest') !!}"> {!! Form::label('pinterest', 'Pinterest', ['class' => 'bold']) !!}
-        {!! Form::text('pinterest', null, [
-            'class' => 'form-control',
-            'id' => 'pinterest',
-            'placeholder' => 'Pinterest',
-        ]) !!}
-        {!! APFrmErrHelp::showErrors($errors, 'pinterest') !!} </div>
+   
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'country_id') !!}"> {!! Form::label('country_id', 'Pais', ['class' => 'bold']) !!}
         {!! Form::select(
             'country_id',
