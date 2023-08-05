@@ -148,6 +148,7 @@ class CompanyController extends Controller
                 $this->deleteCompanyLogo($company->id);
                 $image = $request->file('logo');
                 $fileName = ImageUploadingHelper::UploadImage('company_logos', $image, $request->input('name'), 300, 300, true);
+                dd($fileName);
                 $company->logo = $fileName;
             } catch (\Throwable $th) {
                 dd($th->getMessage(), $th->getFile(), $th->getLine());
