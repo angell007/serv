@@ -140,7 +140,6 @@ class CompanyController extends Controller
     {
 
         $url = '';
-        dd($request->all());
         $company = Company::findOrFail($id);
         /*         * **************************************** */
         if ($request->hasFile('logo')) {
