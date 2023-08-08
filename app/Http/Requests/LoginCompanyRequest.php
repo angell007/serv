@@ -26,8 +26,8 @@ class LoginCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required'
-            // 'email' => [new Exist, new isActive]
+            // 'email' => 'required'
+            'email' => [new Exist, new isActive]
         ];
     }
 }
