@@ -101,20 +101,43 @@ class AdminController extends Controller
         return 'sameUser';
     }
 
+
     public function fetchAdminUsersData()
     {
-        $users = Admin::join('roles', 'admins.role_id', '=', 'roles.id')
-            ->select('admins.id', 'admins.name', 'admins.email', 'roles.role_name');
-        return DataTables::of($users)
-            ->addColumn('action', function ($user) {
-                return '<a href="' . route('edit.admin.user', ['id' => $user->id]) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a><a href="javascript:void(0);" onclick="delete_user(' . $user->id . ');" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a>';
-            })
-            ->removeColumn('password')
-            ->setRowId(function ($user) {
-                return 'admin_user_dt_row_' . $user->id;
-            })
-            ->make(true);
+        $users = Admin::join('roles', 'admins.role_id', '=', 'roles.id')->select('admins.id', 'admins.name', 'admins.email', 'roles.role_name');
+        return DataTables::of($users)->addColumn('action', function ($user) {
+            return '
+                    <a href="' . route('edit.admin.user', ['id' => $user->id]) . '" class="btn btn-xs btn-primary">
+                    <i class="glyphicon glyphicon-edit">
+                    </i> Edit
+                    </a>
+                    <a href="' . route('gestion-permisos', ['id' => $user->id]) . '" class="btn btn-xs btn-primary">
+                    <i class="glyphicon glyphicon-plus">
+                    </i> Gestión Permisos 
+                    </a>
+                    <a href="javascript:void(0);" onclick="delete_user(' . $user->id . ');" class="btn btn-xs btn-danger">
+                    <i class="glyphicon glyphicon-remove">
+                    </i> Delete
+                    </a>';
+        })->removeColumn('password')->setRowId(function ($user) {
+            return 'admin_user_dt_row_' . $user->id;
+        })->make(true);
     }
+
+    // public function fetchAdminUsersData()
+    // {
+    //     $users = Admin::join('roles', 'admins.role_id', '=', 'roles.id')
+    //         ->select('admins.id', 'admins.name', 'admins.email', 'roles.role_name');
+    //     return DataTables::of($users)
+    //         ->addColumn('action', function ($user) {
+    //             return '<a href="' . route('edit.admin.user', ['id' => $user->id]) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a><a href="javascript:void(0);" onclick="delete_user(' . $user->id . ');" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a>';
+    //         })
+    //         ->removeColumn('password')
+    //         ->setRowId(function ($user) {
+    //             return 'admin_user_dt_row_' . $user->id;
+    //         })
+    //         ->make(true);
+    // }
 
     public function notCurrentUser($id)
     {

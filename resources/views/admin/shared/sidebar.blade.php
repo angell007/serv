@@ -181,13 +181,13 @@
             @include('admin/shared/side_bars/site_setting')
         @endif
 
-        <li class="heading">
+        {{-- <li class="heading">
             <h3 class="uppercase">Manage</h3>
             @if (APAuthHelp::hasPermission('gestion'))
                 @include('admin/shared/side_bars/gestion')
                 @include('admin/shared/side_bars/trainings')
             @endif
-        </li>
+        </li> --}}
 
 
     </ul>
