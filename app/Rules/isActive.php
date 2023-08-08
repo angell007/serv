@@ -26,9 +26,10 @@ class isActive implements Rule
      */
     public function passes($attribute, $value)
     {
-        $student = DB::table('companies')->where('email', $value)->first();
-        if (!isset($student)) return false;
-        return  boolval($student->is_active);
+        $companie = DB::table('companies')->where('email', $value)->first();
+        dd($companie);
+        if (!isset($companie)) return false;
+        return  boolval($companie->is_active);
     }
 
     /**
