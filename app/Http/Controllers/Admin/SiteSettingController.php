@@ -112,7 +112,7 @@ class SiteSettingController extends Controller
         $siteSetting->mailchimp_api_key = $request->input('mailchimp_api_key');
         $siteSetting->mailchimp_list_name = $request->input('mailchimp_list_name');
         $siteSetting->mailchimp_list_id = $request->input('mailchimp_list_id');
-        $siteSetting->base_salary = request()->get('salary', 0);
+        $siteSetting->base_salary = request()->get('base_salary', 0);
 
         $siteSetting->update();
         flash('Site Setting has been updated!')->success();
