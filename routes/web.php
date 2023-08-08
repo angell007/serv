@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 use Barryvdh\DomPDF\Facade as PDF;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 
@@ -23,6 +24,10 @@ Route::get('/clear-cache', function () {
   $exitCode = Artisan::call('cache:clear');
 
   $exitCode = Artisan::call('config:cache');
+
+
+  DB::statement('ALTER TABLE jobs ADD positions INT UNSIGNED NULL');
+
 
   return 'DONE'; //Return anything
 
