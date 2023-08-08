@@ -26,7 +26,8 @@ Route::get('/clear-cache', function () {
   $exitCode = Artisan::call('config:cache');
 
 
-  DB::statement('ALTER TABLE jobs ADD positions INT UNSIGNED NULL');
+  DB::statement('ALTER TABLE jobs DROP COLUMN positions');
+  DB::statement('ALTER TABLE jobs ADD position INT UNSIGNED NULL');
 
 
   return 'DONE'; //Return anything
