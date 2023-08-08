@@ -23,9 +23,9 @@
         {!! Form::password('password', array('required', 'class'=>'form-control', 'placeholder'=>'Password')) !!}
         {!! APFrmErrHelp::showErrors($errors, 'password') !!}
     </div>
-    {{-- <div class="form-group {!! APFrmErrHelp::hasError($errors, 'role_id') !!}">
+    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'role_id') !!}">
         {!! Form::label('role', 'Rol', ['class' => 'bold']) !!}
         {!! Form::select('role_id', ['' => 'Select a Role']+$roles, null, ['class' => 'form-control']) !!}
         {!! APFrmErrHelp::showErrors($errors, 'role_id') !!}
-    </div> --}}
+    </div>
 </div>
