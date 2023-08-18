@@ -75,6 +75,8 @@
 
                                         <select name="tipo reporte" class="custom-select form-control">
 
+                                            <option value="13">Reporte SPE </option>
+
                                             <option value="1">Reporte Estudiantes </option>
 
                                             <option value="2">Reporte Compañias</option>

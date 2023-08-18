@@ -97,7 +97,7 @@
             'id' => 'established_in',
         ]) !!}
         {!! APFrmErrHelp::showErrors($errors, 'established_in') !!} </div>
-   
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'phone') !!}"> {!! Form::label('phone', 'Numero telefonico', ['class' => 'bold']) !!}
         {!! Form::text('phone', null, [
             'class' => 'form-control',
@@ -105,11 +105,11 @@
             'placeholder' => 'Numero telefonico',
         ]) !!}
         {!! APFrmErrHelp::showErrors($errors, 'phone') !!} </div>
-   
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'linkedin') !!}"> {!! Form::label('linkedin', 'Linkedin', ['class' => 'bold']) !!}
         {!! Form::text('linkedin', null, ['class' => 'form-control', 'id' => 'linkedin', 'placeholder' => 'Linkedin']) !!}
         {!! APFrmErrHelp::showErrors($errors, 'linkedin') !!} </div>
-   
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'country_id') !!}"> {!! Form::label('country_id', 'Pais', ['class' => 'bold']) !!}
         {!! Form::select(
             'country_id',
@@ -179,6 +179,8 @@
         </div>
         {!! APFrmErrHelp::showErrors($errors, 'is_active') !!}
     </div>
+
+
     <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_featured') !!}">
         {!! Form::label('is_featured', 'Destacada?', ['class' => 'bold']) !!}
         <div class="radio-list">
@@ -199,6 +201,30 @@
         </div>
         {!! APFrmErrHelp::showErrors($errors, 'is_featured') !!}
     </div>
+
+    <div class="form-group {!! APFrmErrHelp::hasError($errors, 'is_verify') !!}">
+        {!! Form::label('is_verify', 'Destacada?', ['class' => 'bold']) !!}
+        <div class="radio-list">
+            <?php
+            $is_verify_1 = '';
+            $is_verify_2 = 'checked="checked"';
+            if (old('is_verify', isset($company) ? $company->is_verify : 0) == 1) {
+                $is_verify_1 = 'checked="checked"';
+                $is_verify_2 = '';
+            }
+            ?>
+            <label class="radio-inline">
+                <input id="verify" name="is_verify" type="radio" value="1" {{ $is_verify_1 }}>
+                Verificada RUES </label>
+            <label class="radio-inline">
+                <input id="not_verify" name="is_verify" type="radio" value="0" {{ $is_verify_2 }}>
+                NO Verificada RUES </label>
+        </div>
+        {!! APFrmErrHelp::showErrors($errors, 'is_verify') !!}
+    </div>
+
+
+
     <div class="form-actions"> {!! Form::button('Guardar <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>', [
         'class' => 'btn btn-large btn-primary',
         'type' => 'submit',

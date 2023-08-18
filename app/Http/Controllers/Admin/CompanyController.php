@@ -188,6 +188,7 @@ class CompanyController extends Controller
         $company->tipo_identificacion = $request->input('tipo_identificacion');
         $company->identificacion = $request->input('identificacion');
         $company->slug = Str::slug($company->name, '-') . '-' . $company->id;
+        $company->is_verify = $request->input('is_verify', 0);
         $company->update();
 
         /*         * ************************************ */
@@ -240,6 +241,7 @@ class CompanyController extends Controller
             'companies.city_id',
             'companies.is_active',
             'companies.is_featured',
+            'companies.is_verify',
             'companies.camara_comercio',
         ]);
 
@@ -257,12 +259,18 @@ class CompanyController extends Controller
                 if ($request->has('is_featured') && $request->is_featured != -1) {
                     $query->where('companies.is_featured', '=', "{$request->get('is_featured')}");
                 }
+                if ($request->has('is_verify') && $request->is_verify != -1) {
+                    $query->where('companies.is_verify', '=', "{$request->get('is_verify')}");
+                }
             })
             ->addColumn('is_active', function ($companies) {
                 return ((bool) $companies->is_active) ? 'Si' : 'No';
             })
             ->addColumn('is_featured', function ($companies) {
                 return ((bool) $companies->is_featured) ? 'Si' : 'No';
+            })
+            ->addColumn('is_verify', function ($companies) {
+                return ((bool) $companies->is_verify) ? 'Si' : 'No';
             })
             ->addColumn('action', function ($companies) {
                 /*                             * ************************* */

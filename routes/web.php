@@ -16,22 +16,37 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Mail\Mailable;
+
 
 Route::get('/clear-cache', function () {
-  
-  $exitCode = Artisan::call('config:clear');
 
-  $exitCode = Artisan::call('cache:clear');
+// $userEmail = 'mdgrisalez@misena.edu.co'; // Cambia esto por tu dirección de correo
+//   $subject = 'Correo de prueba sin vista';
+//   $message = 'Este es un correo de prueba enviado desde Laravel sin utilizar una vista.';
 
-  $exitCode = Artisan::call('config:cache');
+//   return Mail::raw($message, function ($mail) use ($userEmail, $subject) {
+//     $mail->to($userEmail)
+//       ->subject($subject);
+//   });
 
+  // return "Correo de prueba enviado a $userEmail";
 
-  DB::statement('ALTER TABLE jobs DROP COLUMN positions');
-  DB::statement('ALTER TABLE jobs ADD position INT UNSIGNED NULL');
+  // $exitCode = Artisan::call('config:clear');
 
+  // $exitCode = Artisan::call('cache:clear');
 
-  return 'DONE'; //Return anything
+  // $exitCode = Artisan::call('config:cache');
 
+  // DB::statement('ALTER TABLE jobs DROP COLUMN positions');
+
+  // DB::statement('ALTER TABLE jobs ADD position INT UNSIGNED NULL');
+
+  // DB::statement('ALTER TABLE companies DROP COLUMN is_verify');
+
+  // DB::statement('ALTER TABLE companies ADD is_verify INT UNSIGNED DEFAULT 0');
+
+  return 'DONE';
 });
 
 Auth::routes();
@@ -43,7 +58,6 @@ Route::view('/company-login', 'auth.login-company')->name('login_company');
 
 Route::view('/register-user', 'auth.register-user')->name('register_candidato');
 Route::view('/register-company', 'auth.register-company')->name('register_company');
-
 
 Route::get('/', 'IndexController@index')->name('index');
 Route::post('set-locale', 'IndexController@setLocale')->name('set.locale');
@@ -106,37 +120,6 @@ Route::get('admin/register_companies_training', 'Admin\AdminController@viewlistC
 Route::get('admin/register_users_training', 'Admin\AdminController@viewlistUsers')->name('register_users_training');
 
 Route::post('upload-participant', 'UserController@uploadParticipant')->name('upload-participant');
-
-
-Route::get('/pass', function (Request $request) {
-
-
-  return Hash::make('Bolsa2021++');
-
-  $mujeres_registradas = User::where("gender_id", "=", "1")->get();
-  $hombres_registrados = User::where("gender_id", "=", "2")->get();
-  $empresas_registradas = User::all();
-  $vacantes = job::all();
-  $cv_mujeres = JobApply::join("users", "users.id", "=", "job_apply.user_id")->where("users.gender_id", "=", "1")->get();
-  $contrato_mujeres = JobApply::join("users", "users.id", "=", "job_apply.user_id")->where("job_apply.status", "=", "contratado")->where("users.gender_id", "=", "1")->get();
-  $contrato_hombres = JobApply::join("users", "users.id", "=", "job_apply.user_id")->where("job_apply.status", "=", "contratado")->where("users.gender_id", "=", "2")->get();
-  $cv_hombres = JobApply::join("users", "users.id", "=", "job_apply.user_id")->where("users.gender_id", "=", "1")->get();
-
-  dd([
-
-    $mujeres_registradas,
-    $hombres_registrados,
-    $empresas_registradas,
-    $vacantes,
-    $cv_mujeres,
-    $contrato_mujeres,
-    $contrato_hombres,
-    $cv_hombres
-
-  ]);
-
-  return hash::make('Bolsa2021++');
-});
 
 Route::get('fetch-documents', array_merge(['uses' => 'Admin\UserController@fetchUsersDataDocuments']))->name('fetch.data.documents');
 Route::get('download-capacitaciones', array_merge(['uses' => 'DownloadsController@download_capacitaciones']))->name('download_capacitaciones');

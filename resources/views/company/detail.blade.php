@@ -74,7 +74,7 @@
 
                         @if(!Auth::user() && !Auth::guard('company')->user())
 
-                        <h5>Login to View contact details</h5>
+                        <h5>Login para ver detalles de contacto</h5>
 
                         <a href="{{route('login')}}" class="btn">Login</a>
 
@@ -158,6 +158,9 @@
 
                         @foreach($company->jobs as $companyJob)
 
+                        @if ($companyJob->is_active)
+                            
+                       
                         <!--Job start-->
 
                         <li>
@@ -204,7 +207,8 @@
                         </li>
 
                         <!--Job end-->
-
+                        
+                        @endif
                         @endforeach
 
                         @endif

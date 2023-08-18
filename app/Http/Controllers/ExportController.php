@@ -12,6 +12,7 @@ use App\Exports\VacancyInactiveExport;
 use App\Exports\VacancyApplyExport;
 use App\Exports\VacancyContractExport;
 use App\Exports\CompanysExport;
+use App\Exports\DiscriminatedExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
@@ -38,10 +39,12 @@ class ExportController extends Controller
                     return Excel::download(new VacancyApplyExport, 'vacantes_aplicadas.xlsx');
                 case 9:
                     return Excel::download(new VacancyContractExport, 'contratados.xlsx');
-                case 11:
-                    return Excel::download(new VacancyContractExport, 'contratados.xlsx');
-                case 12:
-                    // return Excel::download(new AdvisorycvExport, 'asesorias_cv.xlsx');
+                    // case 11:
+                    //     return Excel::download(new VacancyContractExport, 'contratados.xlsx');
+                    // case 12:
+                    //     return Excel::download(new DiscriminatedExport, 'custom_query.xlsx');
+                    // case 13:
+                    //     return Excel::download(new DiscriminatedExport, 'custom_query.xlsx');
             }
             return back();
         } catch (\Throwable $th) {

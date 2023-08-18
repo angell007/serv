@@ -1,19 +1,12 @@
 <div class="header" style="    background-color: #e8e8e8;">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-6 col-md-6 col-12 mr-1"> 
+            <div class="col-lg-6 col-md-6 col-12 ">
 
                 <a href="{{ url('/') }}" class="logo">
-                    <img class="responsive-image"
-                        src="{{ url('/images/bannerescuelatecnologicav2.jpg') }}"
+                    <img class="responsive-image" src="{{ url('/images/bannerescuelatecnologicav2.jpg') }}"
                         alt="{{ $siteSetting->site_name }}" />
                 </a>
-                
-                {{-- <a href="{{ url('/') }}" class="logo">
-                <img
-                        style="    width: 500px;     max-width: 300%;"
-                        src="{{ url('/images/bannerescuelatecnologicav2.jpg') }}"
-                        alt="{{ $siteSetting->site_name }}" /></a> --}}
 
                 <div class="navbar-header navbar-light">
                     <button class="navbar-toggler collapsed" type="button" data-toggle="collapse"
@@ -22,20 +15,22 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <div class="col-lg-5 col-md-5 col-5">
+            <div class="col-lg-6 col-md-6 col-12">
 
+                
                 <!-- Nav start -->
-                <nav class="navbar navbar-expand-lg navbar-light" style="    margin-top: 20px;">
+                <nav class="navbar navbar-expand-lg navbar-light" >
+
+                    <div class="accessibility-buttons">
+                        <button id="reset-font-size" class="btn btn-light btn-sm ">A</button>
+                        <button id="increase-font-size" class="btn btn-light btn-sm  ">A+</button>
+                        <button id="decrease-font-size" class="btn btn-light btn-sm ">A-</button>
+                        <button onclick="toggleDarkMode()" class="btn btn-light btn-sm ">DM</button>
+                    </div>
+    
 
                     <div class="navbar-collapse collapse" id="nav-main">
                         <ul class="navbar-nav ml-auto">
-
-                            <!-- <li>
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
-                                    data-target="#fileModalUp">
-                                    <i class="fa fa-upload"></i>
-                                </button>
-                            </li> -->
 
 
                             <li class="nav-item {{ Request::url() == route('index') ? 'active' : '' }}"><a
@@ -123,33 +118,16 @@
                                 <li class="nav-item"><a href="{{ route('register') }}"
                                         class="nav-link register">{{ __('Register') }}</a> </li>
                             @endif
-                            <!-- <li class="dropdown userbtn"><a href="{{ url('/') }}"><img
-                                        src="{{ asset('/') }}images/lang.png" alt="" class="userimg" /></a>
-                                <ul class="dropdown-menu">
-                                    @foreach ($siteLanguages as $siteLang)
-<li><a href="javascript:;"
-                                                onclick="event.preventDefault(); document.getElementById('locale-form-{{ $siteLang->iso_code }}').submit();"
-                                                class="nav-link">{{ $siteLang->native }}</a>
-                                            <form id="locale-form-{{ $siteLang->iso_code }}"
-                                                action="{{ route('set.locale') }}" method="POST" style="display: none;">
-                                                {{ csrf_field() }}
-                                                <input type="hidden" name="locale" value="{{ $siteLang->iso_code }}" />
-                                                <input type="hidden" name="return_url" value="{{ url()->full() }}" />
-                                                <input type="hidden" name="is_rtl" value="{{ $siteLang->is_rtl }}" />
-                                            </form>
-                                        </li>
-@endforeach
-                                </ul>
-                            </li> -->
-                        </ul>
 
-                        <!-- Nav collapes end -->
+                            <!-- Nav collapes end -->
 
                     </div>
                     <div class="clearfix"></div>
                 </nav>
 
                 <!-- Nav end -->
+
+             
 
             </div>
         </div>
@@ -164,7 +142,9 @@
 
 <?php
 /*?>
-?>@if (!Auth::user() && !Auth::guard('company')->user())
+?>
+?>
+@if (!Auth::user() && !Auth::guard('company')->user())
     <div class="">my dive 2</div>
 @endif<?php */
 ?>

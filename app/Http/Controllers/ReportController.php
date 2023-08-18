@@ -17,7 +17,7 @@ use App\Job;
 use App\Exports\InvoicesExport;
 
 use App\Exports\CompanysExport;
-
+use App\Exports\DiscriminatedExport;
 use App\Exports\JobsExport;
 
 use App\Exports\VacancyContractExport;
@@ -98,7 +98,7 @@ class ReportController extends Controller
 
         $str = str_replace(
             array('/', '-', ';', ':', '.', ',', '(', ')', '=', '*', '+', '✓', '"', "'"),
-            array('', ' ', '', '', '', '', '', '', '','','', '', '', '' ),
+            array('', ' ', '', '', '', '', '', '', '', '', '', '', '', ''),
             $str
         );
 
@@ -133,7 +133,7 @@ class ReportController extends Controller
             if (preg_replace($pattern, "", $salary_from) == 000) return 0;
             return preg_replace($pattern, "", $salary_from);
         }
-        
+
         if (preg_match($patternOnlyZeros, preg_replace($pattern, "", $salary_to)) || preg_match($patternOnlyZeros,  $salary_to)) {
             return preg_replace($pattern, "", 0);
         } else {
@@ -161,7 +161,7 @@ class ReportController extends Controller
 
 
 
-        return (int)$years * 12;
+        return (int)$years;
     }
 
     public function download()
@@ -206,6 +206,8 @@ class ReportController extends Controller
                 return $this->OferentesSemestralTxt();
             case 12:
                 return $this->PracticasLaboralesTxt();
+            case 13:
+                return Excel::download(new DiscriminatedExport, 'custom_query.xlsx');
         }
     }
 
@@ -430,7 +432,7 @@ class ReportController extends Controller
                 'companies.no_of_employees',
 
                 'companies.established_in',
-                
+
                 'companies.phone',
 
                 'companies.logo',

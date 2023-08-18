@@ -2,11 +2,10 @@
 
 namespace App\Listeners;
 
-use Mail;
 use App\Events\UserRegistered;
 use App\Mail\UserRegisteredMailable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class UserRegisterdListener implements ShouldQueue
 {
@@ -21,12 +20,6 @@ class UserRegisterdListener implements ShouldQueue
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  CompanyRegistered  $event
-     * @return void
-     */
     public function handle(UserRegistered $event)
     {
         Mail::send(new UserRegisteredMailable($event->user));

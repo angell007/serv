@@ -9,10 +9,14 @@ Route::post('delete-training', function (Request $request) {
 })->name('delete-training');
 
 Route::get('proffesions', function (Request $request) {
-  if (request()->get('name')) {
-    $array = DB::table('professions')->where('name', request()->get('name'))->first(['name as id', 'name as text']);
-    return response()->json($array);
-  }
-  $array = DB::table('professions')->where('name', 'Like', '%' . request()->get('q') . '%')->limit(10)->get(['name as id', 'name as text'])->toArray();
+
+  $array = [];
+
+  // if (request()->get('name')) {
+  //   $array = DB::table('professions')->where('name', request()->get('name'))->first(['name as id', 'name as text']);
+  //   return response()->json($array);
+  // }
+  // $array = DB::table('professions')->where('name', 'Like', '%' . request()->get('q') . '%')->limit(10)->get(['name as id', 'name as text'])->toArray();
+
   return response()->json(['results' => $array]);
 });

@@ -19,27 +19,24 @@ class CustomConfigServiceProvider extends ServiceProvider
         if ($settings = SiteSetting::findOrFail(1272)) {
 
             $this->app['config']['mail'] = [
-                'driver' => 'smtp',
-                // 'host' => 'smtp.mailtrap.io',
-                'host' => 'smtp.gmail.com',
-                // 'port' => '2525',
-                'port' => '587',
+                'driver' => $settings->mail_driver,
+                'host' => $settings->mail_host,
+                'port' => $settings->mail_port,
                 'from' => [
-                    'address' => 'bolsadeempleoetitc@gmail.com',
-                    'name' => 'ETITC-Bolsa de Empleo'
+                    'address' => $settings->mail_from_address,
+                    'name' => $settings->mail_from_name
                 ],
                 'recieve_to' => [
-                    'address' => 'bolsadeempleoetitc@gmail.com',
-                    'name' => 'ETITC-Bolsa de Empleo'
+                    'address' => $settings->mail_to_address,
+                    'name' => $settings->mail_to_name
                 ],
-                'encryption' => 'tls',
-                'username' => 'bolsadeempleoetitc@gmail.com',
-                // 'username' => '63683ffb660ebd',
-                // 'password' => 'ae10cb04b9606d',
-                'password' => 'xhwxoslujjozkxvb',
+                'encryption' =>  $settings->mail_encryption,
+                'username' => $settings->mail_username,
+                'password' => $settings->mail_password,
                 'sendmail' => $settings->mail_sendmail,
                 'pretend' => $settings->mail_pretend
             ];
+
             $this->app['config']['services'] = [
                 'mailgun' => [
                     'domain' => $settings->mailgun_domain,
@@ -54,7 +51,7 @@ class CustomConfigServiceProvider extends ServiceProvider
                 'ses' => [
                     'key' => $settings->ses_key,
                     'secret' => $settings->ses_secret,
-                    'region' => $settings->ses_region, // e.g. us-east-1
+                    'region' => $settings->ses_region,
                 ],
             ];
 

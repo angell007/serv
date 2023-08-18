@@ -2,40 +2,19 @@
 
 namespace App\Http\Controllers\Job;
 
-use Auth;
-use DB;
-use Input;
-use Redirect;
 use Carbon\Carbon;
 use App\Job;
 use App\JobApply;
 use App\FavouriteJob;
-use App\Company;
-use App\JobSkill;
-use App\JobSkillManager;
-use App\Country;
-use App\CountryDetail;
-use App\State;
-use App\City;
-use App\CareerLevel;
-use App\FunctionalArea;
-use App\JobType;
-use App\JobShift;
-use App\Gender;
-use App\JobExperience;
-use App\DegreeLevel;
 use App\ProfileCv;
-use App\Helpers\MiscHelper;
 use App\Helpers\DataArrayHelper;
-use App\Http\Requests;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use DataTables;
-use App\Http\Requests\JobFormRequest;
 use App\Http\Requests\Front\ApplyJobFormRequest;
 use App\Http\Controllers\Controller;
 use App\Traits\FetchJobs;
 use App\Events\JobApplied;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class JobController extends Controller
 {
@@ -84,7 +63,7 @@ class JobController extends Controller
         $is_featured = $request->query('is_featured', 2);
         $order_by = $request->query('order_by', 'id');
         $limit = 15;
-        
+
         $jobs = $this->fetchJobs($search, $job_titles, $company_ids, $industry_ids, $job_skill_ids, $functional_area_ids, $country_ids, $state_ids, $city_ids, $is_freelance, $career_level_ids, $job_type_ids, $job_shift_ids, $gender_ids, $degree_level_ids, $job_experience_ids, $salary_from, $salary_to, $salary_currency, $is_featured, $order_by, $limit);
 
         /*         * ************************************************** */
@@ -161,31 +140,31 @@ class JobController extends Controller
         /*         * ************************************************** */
 
         $seo = (object) array(
-                    'seo_title' => $seoArray['description'],
-                    'seo_description' => $seoArray['description'],
-                    'seo_keywords' => $seoArray['keywords'],
-                    'seo_other' => ''
+            'seo_title' => $seoArray['description'],
+            'seo_description' => $seoArray['description'],
+            'seo_keywords' => $seoArray['keywords'],
+            'seo_other' => ''
         );
         return view('job.list')
-                        ->with('functionalAreas', $this->functionalAreas)
-                        ->with('countries', $this->countries)
-                        ->with('currencies', array_unique($currencies))
-                        ->with('jobs', $jobs)
-                        ->with('jobTitlesArray', $jobTitlesArray)
-                        ->with('skillIdsArray', $skillIdsArray)
-                        ->with('countryIdsArray', $countryIdsArray)
-                        ->with('stateIdsArray', $stateIdsArray)
-                        ->with('cityIdsArray', $cityIdsArray)
-                        ->with('companyIdsArray', $companyIdsArray)
-                        ->with('industryIdsArray', $industryIdsArray)
-                        ->with('functionalAreaIdsArray', $functionalAreaIdsArray)
-                        ->with('careerLevelIdsArray', $careerLevelIdsArray)
-                        ->with('jobTypeIdsArray', $jobTypeIdsArray)
-                        ->with('jobShiftIdsArray', $jobShiftIdsArray)
-                        ->with('genderIdsArray', $genderIdsArray)
-                        ->with('degreeLevelIdsArray', $degreeLevelIdsArray)
-                        ->with('jobExperienceIdsArray', $jobExperienceIdsArray)
-                        ->with('seo', $seo);
+            ->with('functionalAreas', $this->functionalAreas)
+            ->with('countries', $this->countries)
+            ->with('currencies', array_unique($currencies))
+            ->with('jobs', $jobs)
+            ->with('jobTitlesArray', $jobTitlesArray)
+            ->with('skillIdsArray', $skillIdsArray)
+            ->with('countryIdsArray', $countryIdsArray)
+            ->with('stateIdsArray', $stateIdsArray)
+            ->with('cityIdsArray', $cityIdsArray)
+            ->with('companyIdsArray', $companyIdsArray)
+            ->with('industryIdsArray', $industryIdsArray)
+            ->with('functionalAreaIdsArray', $functionalAreaIdsArray)
+            ->with('careerLevelIdsArray', $careerLevelIdsArray)
+            ->with('jobTypeIdsArray', $jobTypeIdsArray)
+            ->with('jobShiftIdsArray', $jobShiftIdsArray)
+            ->with('genderIdsArray', $genderIdsArray)
+            ->with('degreeLevelIdsArray', $degreeLevelIdsArray)
+            ->with('jobExperienceIdsArray', $jobExperienceIdsArray)
+            ->with('seo', $seo);
     }
 
     public function jobDetail(Request $request, $job_slug)
@@ -222,15 +201,15 @@ class JobController extends Controller
         $seoArray = $this->getSEO((array) $job->functional_area_id, (array) $job->country_id, (array) $job->state_id, (array) $job->city_id, (array) $job->career_level_id, (array) $job->job_type_id, (array) $job->job_shift_id, (array) $job->gender_id, (array) $job->degree_level_id, (array) $job->job_experience_id);
         /*         * ************************************************** */
         $seo = (object) array(
-                    'seo_title' => $job->title,
-                    'seo_description' => $seoArray['description'],
-                    'seo_keywords' => $seoArray['keywords'],
-                    'seo_other' => ''
+            'seo_title' => $job->title,
+            'seo_description' => $seoArray['description'],
+            'seo_keywords' => $seoArray['keywords'],
+            'seo_other' => ''
         );
         return view('job.detail')
-                        ->with('job', $job)
-                        ->with('relatedJobs', $relatedJobs)
-                        ->with('seo', $seo);
+            ->with('job', $job)
+            ->with('relatedJobs', $relatedJobs)
+            ->with('seo', $seo);
     }
 
     /*     * ************************************************** */
@@ -241,7 +220,7 @@ class JobController extends Controller
         $data['user_id'] = Auth::user()->id;
         $data_save = FavouriteJob::create($data);
         flash(__('Empleo agregado a la lista de favoritos'))->success();
-        return \Redirect::route('job.detail', $job_slug);
+        return Redirect::route('job.detail', $job_slug);
     }
 
     public function removeFromFavouriteJob(Request $request, $job_slug)
@@ -250,51 +229,41 @@ class JobController extends Controller
         FavouriteJob::where('job_slug', 'like', $job_slug)->where('user_id', $user_id)->delete();
 
         flash(__('Empelo eliminado de la lista de favoritos'))->success();
-        return \Redirect::route('job.detail', $job_slug);
+        return Redirect::route('job.detail', $job_slug);
     }
 
     public function applyJob(Request $request, $job_slug)
     {
         $user = Auth::user();
         $job = Job::where('slug', 'like', $job_slug)->first();
-        
+
 
         if ((bool)$user->is_active === false) {
             flash(__('Por favor subir la documentación requerida. Sí ya lo hizo por favor comuníquese con nosotros'))->error();
-            return \Redirect::route('job.detail', $job_slug);
+            return Redirect::route('job.detail', $job_slug);
             exit;
         }
-        
-        // if ((bool) config('jobseeker.is_jobseeker_package_active')) {
-        //     if (
-        //             ($user->jobs_quota <= $user->availed_jobs_quota) ||
-        //             ($user->package_end_date->lt(Carbon::now()))
-        //     ) {
-        //         flash(__('Please subscribe to package first'))->error();
-        //         return \Redirect::route('home');
-        //         exit;
-        //     }
-        // }
-        
+
+
         if ($user->isAppliedOnJob($job->id)) {
             flash(__('You have already applied for this job'))->success();
-            return \Redirect::route('job.detail', $job_slug);
+            return Redirect::route('job.detail', $job_slug);
             exit;
         }
-        
-        
+
+
 
         $myCvs = ProfileCv::where('user_id', '=', $user->id)->pluck('title', 'id')->toArray();
 
         return view('job.apply_job_form')
-                        ->with('job_slug', $job_slug)
-                        ->with('job', $job)
-                        ->with('myCvs', $myCvs);
+            ->with('job_slug', $job_slug)
+            ->with('job', $job)
+            ->with('myCvs', $myCvs);
     }
 
     public function postApplyJob(ApplyJobFormRequest $request, $job_slug)
     {
-        
+
         $user = Auth::user();
         $user_id = $user->id;
         $job = Job::where('slug', 'like', $job_slug)->first();
@@ -317,21 +286,16 @@ class JobController extends Controller
         event(new JobApplied($job, $jobApply));
 
         flash(__('Has aplicado  a esta vacante '))->success();
-        return \Redirect::route('job.detail', $job_slug);
+        return Redirect::route('job.detail', $job_slug);
     }
 
     public function myJobApplications(Request $request)
     {
         $myAppliedJobIds = Auth::user()->getAppliedJobIdsArray();
-      //  $jobs = Job::whereIn('id', $myAppliedJobIds)->paginate(10);
-
-      $my = Auth::user()->getAppliedJobApplyIdsArray();
-
-
-      $jobs = Job::whereIn('job_apply.id', $my)->join('job_apply',"jobs.id",'=','job_apply.job_id')->get();
-
+        $my = Auth::user()->getAppliedJobApplyIdsArray();
+        $jobs = Job::whereIn('job_apply.id', $my)->join('job_apply', "jobs.id", '=', 'job_apply.job_id')->get();
         return view('job.my_applied_jobs')
-                        ->with('jobs', $jobs);
+            ->with('jobs', $jobs);
     }
 
     public function myFavouriteJobs(Request $request)
@@ -339,7 +303,6 @@ class JobController extends Controller
         $myFavouriteJobSlugs = Auth::user()->getFavouriteJobSlugsArray();
         $jobs = Job::whereIn('slug', $myFavouriteJobSlugs)->paginate(10);
         return view('job.my_favourite_jobs')
-                        ->with('jobs', $jobs);
+            ->with('jobs', $jobs);
     }
-
 }

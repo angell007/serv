@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use Mail;
 use App\Events\JobApplied;
 use App\Mail\JobAppliedJobSeekerMailable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Mail;
 
 class JobAppliedJobSeekerListener implements ShouldQueue
 {
@@ -21,12 +21,7 @@ class JobAppliedJobSeekerListener implements ShouldQueue
         //
     }
 
-    /**
-     * Handle the event.
-     *
-     * @param  CompanyRegistered  $event
-     * @return void
-     */
+
     public function handle(JobApplied $event)
     {
         Mail::send(new JobAppliedJobSeekerMailable($event->job, $event->jobApply));

@@ -283,7 +283,7 @@ trait JobTrait
 
         /*         * ************************************ */
 
-        flash('Vacante publicada!')->success();
+        flash('Vacante creada!')->success();
 
         return Redirect::route('edit.job', array($job->id));
     }
@@ -432,24 +432,6 @@ trait JobTrait
             return Redirect::route('company.home');
         }
 
-        // if ((bool)config('company.is_company_package_active')) {
-
-        //     if (
-
-        //         ($company->package_end_date === null) ||
-
-        //         ($company->package_end_date->lt(Carbon::now())) ||
-
-        //         ($company->jobs_quota <= $company->availed_jobs_quota)
-
-        //     ) {
-        //         flash(__('Por favor suscribete'))->error();
-        //         return Redirect::route('company.home');
-        //     }
-        // }
-
-
-
         $countries = DataArrayHelper::langCountriesArray();
 
         $currencies = DataArrayHelper::currenciesArray();
@@ -520,51 +502,26 @@ trait JobTrait
     {
 
         $company = Auth::guard('company')->user();
-
         $job = new Job();
-
         $job->company_id = $company->id;
-
         $job = $this->assignJobValues($job, $request);
-
         $job->save();
-
         /*         * ******************************* */
-
         $job->slug = Str::slug($job->title, '-') . '-' . $job->id;
-
         /*         * ******************************* */
-
         $job->update();
-
         /*         * ************************************ */
-
         /*         * ************************************ */
-
         $this->storeJobSkills($request, $job->id);
-
         /*         * ************************************ */
-
         $this->updateFullTextSearch($job);
-
         /*         * ************************************ */
-
-
-
         /*         * ******************************* */
-
         $company->availed_jobs_quota = $company->availed_jobs_quota + 1;
-
         $company->update();
-
         /*         * ******************************* */
-
-
-
         event(new JobPosted($job));
-
-        flash('Vacante publicada!')->success();
-
+        flash('Vacante creada!')->success();
         return Redirect::route('edit.front.job', array($job->id));
     }
 
