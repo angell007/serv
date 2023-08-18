@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/clear-cache', function () {
 
+  $data = DB::table('site_settings')->select('*')->where('id', 1272)->get();
+
+  dd($data);
+
 
   // DB::statement('ALTER TABLE jobs DROP COLUMN positions');
 
@@ -26,7 +30,7 @@ Route::get('/clear-cache', function () {
 
   // DB::statement('ALTER TABLE companies DROP COLUMN is_verify');
 
-  DB::statement('ALTER TABLE companies ADD is_verify INT UNSIGNED DEFAULT 0');
+  // DB::statement('ALTER TABLE companies ADD is_verify INT UNSIGNED DEFAULT 0');
 
   $exitCode = Artisan::call('config:clear');
 
