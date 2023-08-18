@@ -5,6 +5,7 @@ use App\Job;
 use App\Models\template_contrato;
 use App\User;
 use App\JobApply;
+use App\SiteSetting;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -19,9 +20,20 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/clear-cache', function () {
 
-  $data = DB::table('site_settings')->select('*')->where('id', 1272)->get();
-
-  dd($data);
+  $settings = SiteSetting::find(1272);
+  
+  $settings->update([
+    'mail_driver' => 'smtp',
+    'mail_host' => 'smtp.office365.com',
+    'mail_port' => '587',
+    'mail_from_address' => 'info-noreply@itc.edu.co',
+    'mail_from_name' => 'ETITC-Bolsa de Empleo',
+    'mail_to_address' => 'info-noreply@itc.edu.co',
+    'mail_to_name' => 'ETITC-Bolsa de Empleo',
+    'mail_encryption' => 'TLS',
+    'mail_username' => 'info-noreply@itc.edu.co',
+    'mail_password' => 'At&790X%uatX',
+  ]);
 
 
   // DB::statement('ALTER TABLE jobs DROP COLUMN positions');
