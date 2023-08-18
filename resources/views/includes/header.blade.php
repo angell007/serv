@@ -21,12 +21,12 @@
                 <!-- Nav start -->
                 <nav class="navbar navbar-expand-lg navbar-light" >
 
-                    <div class="accessibility-buttons">
+                    {{-- <div class="accessibility-buttons"> --}}
                         <button id="reset-font-size" class="btn btn-light btn-sm ">A</button>
                         <button id="increase-font-size" class="btn btn-light btn-sm  ">A+</button>
                         <button id="decrease-font-size" class="btn btn-light btn-sm ">A-</button>
                         <button onclick="toggleDarkMode()" class="btn btn-light btn-sm ">DM</button>
-                    </div>
+                    {{-- </div> --}}
     
 
                     <div class="navbar-collapse collapse" id="nav-main">

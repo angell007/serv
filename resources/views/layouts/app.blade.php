@@ -91,11 +91,8 @@ if (!isset($seo)) {
         }
 
         .accessibility-buttons {
-            /* top: 2em; */
-            flex-direction: column;
             align-items: center;
             z-index: 9999;
-            border-radius: 90%;
         }
 
         .btn-accessibility {
