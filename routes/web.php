@@ -17,18 +17,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Mail\Mailable;
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/clear-cache', function () {
 
-// $userEmail = 'mdgrisalez@misena.edu.co'; // Cambia esto por tu dirección de correo
-//   $subject = 'Correo de prueba sin vista';
-//   $message = 'Este es un correo de prueba enviado desde Laravel sin utilizar una vista.';
 
-//   return Mail::raw($message, function ($mail) use ($userEmail, $subject) {
-//     $mail->to($userEmail)
-//       ->subject($subject);
-//   });
+  $folderPath = public_path('Reportes'); // Ruta completa a la carpeta en public
+
+  if (File::isDirectory($folderPath)) {
+    File::cleanDirectory($folderPath);
+  } else {
+    File::makeDirectory($folderPath);
+  }
+
+  // $userEmail = 'mdgrisalez@misena.edu.co'; // Cambia esto por tu dirección de correo
+  //   $subject = 'Correo de prueba sin vista';
+  //   $message = 'Este es un correo de prueba enviado desde Laravel sin utilizar una vista.';
+
+  //   return Mail::raw($message, function ($mail) use ($userEmail, $subject) {
+  //     $mail->to($userEmail)
+  //       ->subject($subject);
+  //   });
 
   // return "Correo de prueba enviado a $userEmail";
 

@@ -6,6 +6,9 @@ use App\Job;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use Response;
 
 trait ReportsTxt
 {
@@ -18,10 +21,22 @@ trait ReportsTxt
     protected $yes = 'S';
     protected $not = 'N';
     protected $urlBase = 'urlbase';
-    protected $baseSalary = 1160000;
+
+    public function cleanFolder()
+    {
+        $folderPath = public_path('Reportes');
+
+        if (File::isDirectory($folderPath)) {
+            File::cleanDirectory($folderPath);
+        } else {
+            File::makeDirectory($folderPath);
+        }
+    }
 
     public function PositionsTxt()
     {
+
+        $this->cleanFolder();
 
         $init =  request()->get('inicio');
         $end =  request()->get('fin');
@@ -120,7 +135,7 @@ trait ReportsTxt
 	    jobs.created_at ASC;
 ");
 
-        $file = $this->codeIes . Carbon::parse($end)->format('Ymd') . ".txt";
+        $file = 'Reportes/'  . $this->codeIes . Carbon::parse($end)->format('Ymd') . ".txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
@@ -197,7 +212,10 @@ trait ReportsTxt
 
     public function PracticasLaboralesTxt()
     {
-        $file =  'PL' . $this->codeIes . Carbon::now()->format('Ymd') .  ".txt";
+
+        $this->cleanFolder();
+
+        $file = 'Reportes/'  . 'PL' . $this->codeIes . Carbon::now()->format('Ymd') .  ".txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
@@ -222,7 +240,8 @@ trait ReportsTxt
 
     public function OferentesMensualTxt()
     {
-        $file = '';
+
+        $this->cleanFolder();
         $init =  request()->get('inicio');
         $end =  request()->get('fin');
         $date =  Carbon::parse($end)->format('mY');
@@ -268,7 +287,7 @@ trait ReportsTxt
         users.updated_at BETWEEN '$init'
         AND '$end'")[0];
 
-        $file = "DBO22293$date.txt";
+        $file = 'Reportes/'  . "DBO22293$date.txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
@@ -319,8 +338,6 @@ trait ReportsTxt
 
         fwrite($txt,  PHP_EOL);
 
-        // fwrite($txt,  "\r\n");
-
         fclose($txt);
 
         header('Content-Description: File Transfer');
@@ -343,6 +360,7 @@ trait ReportsTxt
     public function OferentesSemestralTxt()
     {
 
+        $this->cleanFolder();
         $init =  request()->get('inicio');
         $end =  request()->get('fin');
         $date =  Carbon::parse($end)->format('mY');
@@ -373,6 +391,7 @@ trait ReportsTxt
         $data = DB::select("SELECT
         02 AS codigoRegistro,
         22293 AS codigoPrestador,
+        users.id as identify,
         date_format(date_of_birth, '%d%m%Y') AS fechaNacimiento,
         countries.iso31661 AS PaisNacimiento,
         SUBSTRING(states.divipola, 1, 2) AS departamentoNacimiento,
@@ -396,7 +415,7 @@ trait ReportsTxt
         '' AS fechaInicioExperiencia,
         '' AS fechaFinExperiencia,
         'MO' AS codigoSegmentoManoDeObra,
-        range_expected_salary AS aspiracionSalarial
+        expected_salary AS aspiracionSalarial
     FROM
         users
         LEFT JOIN countries ON users.nationality_id = countries.country_id
@@ -412,7 +431,7 @@ trait ReportsTxt
         AND '$end' ");
 
 
-        $file = "IBHV22293$date.txt";
+        $file = 'Reportes/'  . "IBHV22293$date.txt";
 
         $txt = fopen($file, "w") or die("Unable to open file!");
 
@@ -421,8 +440,6 @@ trait ReportsTxt
         fwrite($txt, $header->numeroTotalDeRegistros . $this->separatorSingle);
         fwrite($txt, $header->fechaArchivo);
         fwrite($txt,  PHP_EOL);
-        // fwrite($txt,  "\r\n");
-
 
         foreach ($data as $datum) {
 
@@ -448,8 +465,6 @@ trait ReportsTxt
 
             fwrite($txt,        $datum->codigoSegmentoFormacionAcademica . $this->separatorSingle);
 
-            // foreach ($datum->profileEducation as $edu) {
-
             fwrite($txt,        $datum->tituloFormacionAcademica . $this->separatorSingle);
 
             fwrite($txt,        $datum->nivelEducativo . $this->separatorSingle);
@@ -459,11 +474,8 @@ trait ReportsTxt
             fwrite($txt,        $datum->estadoFormacion . $this->separatorSingle);
 
             fwrite($txt,        $datum->paisFormacion . $this->separatorSingle);
-            // }
 
             fwrite($txt,        $datum->codigoSegmentoExperienciaLaboral . $this->separatorSingle);
-
-            // foreach ($datum->profileExperience as $exp) {
 
             fwrite($txt,         $datum->nombreCargo . $this->separatorSingle);
 
@@ -478,43 +490,39 @@ trait ReportsTxt
             fwrite($txt,         $datum->fechaInicioExperiencia . $this->separatorSingle);
 
             fwrite($txt,         $datum->fechaFinExperiencia . $this->separatorSingle);
-            // }
 
-            // $s = 11;
+            $s = 11;
 
-            // $b = 1060000;
+            $b = DB::table('site_settings')->select('base_salary')->where('id', 1272)->first()->base_salary;
 
-            // $mi = $this->htmlToPlainText($datum->aspiracionSalarial);
+            $mi = floatval(str_replace(['$', ','], '', $datum->aspiracionSalarial));
 
-            // if ($mi < $b)  $s = 1;
+            if ($mi < $b)  $s = 1;
 
-            // if ($mi == $b)  $s = 2;
+            if ($mi == $b)  $s = 2;
 
-            // if ($mi >= $b && $mi < 2 * $b)  $s = 3;
+            if ($mi >= $b && $mi < 2 * $b)  $s = 3;
 
-            // if ($mi >= 2 * $b && $mi < 4 * $b)  $s = 4;
+            if ($mi >= 2 * $b && $mi < 4 * $b)  $s = 4;
 
-            // if ($mi >= 4 * $b && $mi < 6 * $b)  $s = 5;
+            if ($mi >= 4 * $b && $mi < 6 * $b)  $s = 5;
 
-            // if ($mi >= 6 * $b && $mi < 9 * $b)  $s = 6;
+            if ($mi >= 6 * $b && $mi < 9 * $b)  $s = 6;
 
-            // if ($mi >= 9 * $b && $mi < 12 * $b)  $s = 7;
+            if ($mi >= 9 * $b && $mi < 12 * $b)  $s = 7;
 
-            // if ($mi >= 12 * $b && $mi < 15 * $b)  $s = 8;
+            if ($mi >= 12 * $b && $mi < 15 * $b)  $s = 8;
 
-            // if ($mi >= 15 * $b && $mi < 19 * $b)  $s = 9;
+            if ($mi >= 15 * $b && $mi < 19 * $b)  $s = 9;
 
-            // if ($mi >= 20 * $b) $s = 10;
+            if ($mi >= 20 * $b) $s = 10;
 
             fwrite($txt,        $datum->codigoSegmentoManoDeObra . $this->separatorSingle);
 
-            fwrite($txt,        $datum->aspiracionSalarial);
+            fwrite($txt,        $s);
 
             fwrite($txt,  PHP_EOL);
-
-            // fwrite($txt,  "\r\n");
         }
-
 
         fwrite($txt, 99 . $footer->codigoTipoRegistro . $this->separatorSingle);
         fwrite($txt, $footer->codigoUnicoPrestador . $this->separatorSingle);
@@ -522,7 +530,6 @@ trait ReportsTxt
         fwrite($txt, $footer->conteoDeControl . $this->separatorSingle);
         fwrite($txt, Carbon::now()->format('dmY'));
         fwrite($txt,  PHP_EOL);
-        // fwrite($txt,  "\r\n");
 
         fclose($txt);
 
