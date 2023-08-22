@@ -20,20 +20,20 @@ use Illuminate\Support\Facades\Redirect;
 
 Route::get('/clear-cache', function () {
 
-  $settings = SiteSetting::find(1272);
-  
-  $settings->update([
-    'mail_driver' => 'smtp',
-    'mail_host' => 'smtp.office365.com',
-    'mail_port' => '587',
-    'mail_from_address' => 'info-noreply@itc.edu.co',
-    'mail_from_name' => 'ETITC-Bolsa de Empleo',
-    'mail_to_address' => 'info-noreply@itc.edu.co',
-    'mail_to_name' => 'ETITC-Bolsa de Empleo',
-    'mail_encryption' => 'TLS',
-    'mail_username' => 'info-noreply@itc.edu.co',
-    'mail_password' => 'At&790X%uatX',
-  ]);
+  // $seFttings = SiteSetting::find(1272);
+
+  // $settings->update([
+  //   'mail_driver' => 'smtp',
+  //   'mail_host' => 'smtp.office365.com',
+  //   'mail_port' => '587',
+  //   'mail_from_address' => 'info-noreply@itc.edu.co',
+  //   'mail_from_name' => 'ETITC-Bolsa de Empleo',
+  //   'mail_to_address' => 'info-noreply@itc.edu.co',
+  //   'mail_to_name' => 'ETITC-Bolsa de Empleo',
+  //   'mail_encryption' => 'TLS',
+  //   'mail_username' => 'info-noreply@itc.edu.co',
+  //   'mail_password' => 'At&790X%uatX',
+  // ]);
 
 
   // DB::statement('ALTER TABLE jobs DROP COLUMN positions');

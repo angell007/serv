@@ -30,10 +30,9 @@ class SendEmailCommand extends Command
             $companies = Company::get(['email', 'id']);
 
             foreach ($companies as $company) {
-
                 if ($this->companyVacancyExpiry($company->id)) {
-                    $data = ['subject' => $subject, 'email' => $company->email, 'jobs' => [], 'message_c' => $message];
-                    Mail::send(new ExpiryVacancyMail($data));
+                    // $data = ['subject' => $subject, 'email' => $company->email, 'jobs' => [], 'message_c' => $message];
+                    // Mail::send(new ExpiryVacancyMail($data));
                     $this->info('Email sent successfully!');
                 }
             }

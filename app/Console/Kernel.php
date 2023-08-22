@@ -26,10 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
         $schedule->command('queue:work --stop-when-empty')->everyFiveMinutes()->withoutOverlapping(5)->sendOutputTo(storage_path() . '/logs/queue-jobs.log');
         $schedule->command('route:call check-package-validity')->daily()->withoutOverlapping(5)->sendOutputTo(storage_path() . '/logs/queue-jobs.log');
-        $schedule->command('email:send')->weekdays()->at('8:00');
+        // $schedule->command('email:send')->weekdays()->at('8:00');
+        // $schedule->command('email:send')->weekdays()->at('8:00');
+        $schedule->command('email:send')->everyMinute();
+        // $schedule->command('email:send')->daily();
     }
 
     /**
