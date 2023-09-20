@@ -234,6 +234,9 @@ Route::get('/download-cv/{file?}/{title?}/{user}',  function ($a, $b, $c) {
       $q->where('title', $b);
     }])->find($c);
 
+    dd($res);
+    dd($res->profileCvs);
+
     if ($res->profileCvs && count($res->profileCvs) > 0) {
       return response()->download(public_path() . '/cvs/' . $a);
     }
