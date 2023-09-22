@@ -137,7 +137,7 @@ trait JobTrait
 
         $job->is_freelance = $request->input('is_freelance', 1);
 
-        $job->career_level_id = implode(',', $request->input('career_level_id'));
+        $job->career_level_id = is_array($request->input('career_level_id')) ?  implode(',', $request->input('career_level_id')) :  $request->input('career_level_id');
 
         $job->salary_from = $request->input('salary_from');
 
@@ -147,7 +147,10 @@ trait JobTrait
 
         $job->hide_salary = $request->input('hide_salary');
 
-        $job->functional_area_id = implode(',', $request->input('functional_area_id'));
+        // $job->functional_area_id = implode(',', $request->input('functional_area_id'));
+
+        $job->functional_area_id = is_array($request->input('functional_area_id')) ?  implode(',', $request->input('functional_area_id')) :  $request->input('functional_area_id');
+
 
         $job->job_type_id = $request->input('job_type_id');
 
@@ -159,7 +162,9 @@ trait JobTrait
 
         $job->expiry_date = $request->input('expiry_date');
 
-        $job->degree_level_id = implode(',', $request->input('degree_level_id'));
+        // $job->degree_level_id = implode(',', $request->input('degree_level_id'));
+
+        $job->degree_level_id = is_array($request->input('degree_level_id')) ?  implode(',', $request->input('degree_level_id')) :  $request->input('degree_level_id');
 
         $job->job_experience_id = $request->input('job_experience_id');
 
